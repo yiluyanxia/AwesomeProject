@@ -53,11 +53,11 @@ yarn config set registry https://registry.npm.taobao.org --global
 yarn config set disturl https://npm.taobao.org/dist --global
 ```
 
-6. 安装Android Studio/夜神模拟器
+6. 安装Android Studio/夜神模拟器  
 这一步是为了使用其模拟器，实际上可忽略。
 因为我在使用Android Studio的过程中遇到对我来说非常困难的bug
 然后我就放弃了  
-所以我又安装了夜神模拟器，虽然使用这个模拟器也遇到bug
+所以我又安装了夜神模拟器，虽然使用这个模拟器也遇到问题
 
 7. 初始化项目
 
@@ -72,7 +72,7 @@ react-native run-android
 我的理解就是模拟器没有关联并启动所导致的。（可能是错误的）
 
 
-## （二）在模拟器中运行 
+### （二）在模拟器中运行 
 
 然后打算使用Android Studio直接运行项目。
 在初步安装完成后按照官网进行配置以完成全部的安装。
@@ -115,8 +115,8 @@ adb devices
 ```
 ![运行项目](./docs/运行项目.png)
 
-5. 解决夜神模拟器红屏
-这时夜神模拟器出现刺眼的红屏
+5. 解决夜神模拟器红屏  
+这时夜神模拟器出现刺眼的红屏  
 点击“摇一摇”按钮，在弹出菜单中选择"Dev Settings",点击Debug,输入自己的ip地址和8081
 
 ```
@@ -128,3 +128,8 @@ adb devices
 终于出来了！  
 
 
+## 实践
+### （一）FlatList长列表
+![FlatList](./docs/FlatList.png)
+根据官方文档的实例，布局还是挺容易的，不过内置的属性和方法，还没有更深入的体验，这对我来说还有一定的难度  *（手动捂脸）* 。  
+还加了个react-native-vector-icons，文档也很清楚，根据文档操作基本上没问题，这就是大项目和小项目的区别，是否受欢迎的原因。
