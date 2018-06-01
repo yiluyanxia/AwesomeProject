@@ -131,5 +131,25 @@ adb devices
 ## 实践
 ### （一）FlatList长列表
 ![FlatList](./docs/FlatList.png)  
-根据官方文档的实例，布局还是挺容易的，不过内置的属性和方法，还没有更深入的体验，这对我来说还有一定的难度  *（手动捂脸）* 。    
+根据官方文档的实例，布局还是挺容易的，不过内置的属性和方法，还没有更深入的体验，这对我来说还有一定的难度 *（手动捂脸）* 。    
 还加了个react-native-vector-icons，文档也很清楚，根据文档操作基本上没问题，就是各种安卓原生的设置完全看不懂，这就是大项目和小项目的区别，是否受欢迎的原因。
+
+<!-- Failed child context type: Invail child context 'virtualizedCell.cellKey' of type 'number' supplied to 'CellRender', expect 'string'. -->
+
+今天报了一个bug,"很抱歉，AwesomeProject项目已停止运行"，网友给出的答案是模拟器的问题，我想也是，毕竟我还没写bug。
+我猜可能是nox的sdk配置与Android studio中的sdk配置不同，
+于是尝试将C:\Users\Administrator\AppData\Local\Android\Sdk\platform-tools中的adb.exe文件替换C:\Program Files (x86)\Nox\bin中的nox_adb.exe文件，然后居然就是好了。  
+这波操作感觉跟以前的电视剧收不到信号，然后拍拍就好的了情况一样。哇咔咔。
+
+一个警告，暂时不知道如何解决
+isMounted(...) is deprecated in plain JavaScript React classes. Instead, make sure to clean up subscriptions and pending requests in componentWillUnmount to prevent memory leaks.
+
+### react-navigation
+安卓没有navigation，官方推荐 react-navigation，目前只研究出来如何在TabNavigation里面放入StackNavigator，还不知道如何在StackNavigator插入TabNavigation。  
+官网的例子和网友的示例都练习了一遍。
+
+
+### todo list
+尝试编写第一个实际的案例。
+
+
