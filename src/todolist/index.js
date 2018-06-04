@@ -12,7 +12,6 @@ import {
 import TodoItem from './todoItem'
 
 
-
 class All extends Component {
   constructor(props){  
     super(props);   
@@ -42,16 +41,68 @@ class All extends Component {
   }  
 
 
+  componentDidMount() {
+    let _this = this;
+    AsyncStorage.getItem('todolistData', (err, result) => {
+      if(err){
+        return;
+      }
+      let todoListArr = (result != null) ? JSON.parse(result) :'';
+     
+      _this.setState({
+        todolistData: todoListArr
+      })
+      
+    })
+
+
+    
+
+  }
+
+
   _save(){
     let _this = this;
     let tdVal =  _this.state.todolistData
-    // let tdVal =  { todolist: _this.state.todolistData}
     AsyncStorage.setItem('todolistData', JSON.stringify(tdVal), ()=>{
       Alert.alert("save success");
       AsyncStorage.mergeItem('todolistData',JSON.stringify(tdVal), () =>{
         Alert.alert("merge success")
       })
     });
+  }
+  
+  _merge(i){
+    let _this = this
+    const todolistData = _this.state.todolistData;
+    todolistData[i].isComplete = !todolistData[i].isComplete
+    _this.setState(preState => ({
+      todolistData:[...preState.todolistData]
+    }))
+
+    let mergeVal = _this.state.todolistData;
+   
+    AsyncStorage.setItem('todolistData', JSON.stringify(mergeVal), ()=>{
+      Alert.alert("savemerge success");
+      AsyncStorage.mergeItem('todolistData',JSON.stringify(mergeVal), () =>{
+        
+      })
+    });
+    //为什么只写mergeItem存不进去？
+    // AsyncStorage.mergeItem('todolistData',JSON.stringify(mergeVal), () =>{
+    //   Alert.alert("merge3 success")
+    // })
+  }
+
+  getRoutes(){
+    const {navigator} = this.props;
+
+    const routes = navigator.getCurrentRoutes();
+    const currentRoute = routes[routes.length - 1];
+
+    if (currentRoute.name === "your route name") {
+        // reuturn view;
+    }
   }
 
 
@@ -63,7 +114,7 @@ class All extends Component {
         <FlatList
           data={this.state.todolistData}
           keyExtractor = {(item, index) => item.id.toString()}
-          renderItem={({item}) => <TodoItem content={item.content} isComplete={item.isComplete} /> }
+          renderItem={({item,index}) => <TodoItem content={item.content} isComplete={item.isComplete} _merge={this._merge.bind(this,index)} /> }
         />
         
       </View>

@@ -18,7 +18,19 @@ export default class CompletedScreen extends Component {
     }
   }
 
- 
+  filterArr(dataArr) {
+    var list = dataArr, data = [];
+    for (var i = 0; i < list.length; i++) {
+      if (!data[list[i].isComplete]) {
+        var arr = [];
+        arr.push(list[i]);
+        data[list[i].isComplete] = arr;
+      } else {
+        data[list[i].isComplete].push(list[i])
+      }
+    }
+    return data;
+  }
 
   componentDidMount() {
     let _this = this;
@@ -26,11 +38,19 @@ export default class CompletedScreen extends Component {
       if(err){
         return;
       }
+      let todoListArr = (result != null) ? JSON.parse(result) :'';
+      let  todoListFilter= this.filterArr(todoListArr);
       _this.setState({
-        todolistData: (result != null) ? JSON.parse(result) :''
+        todolistData: todoListFilter[true]
       })
-      Alert.alert("getItem success")
+      // Alert.alert("getItem success")
     })
+  }
+
+
+  _merge(i){
+    
+    
   }
 
   render() {
@@ -42,7 +62,7 @@ export default class CompletedScreen extends Component {
         <FlatList
           data={todoList}
           keyExtractor = {(item, index) => item.id}
-          renderItem={({item}) => <TodoItem content={item.content} isComplete={item.isComplete} /> }
+          renderItem={({item,index}) => <TodoItem content={item.content} isComplete={item.isComplete}  _merge={this._merge.bind(this,index)}/> }
         />
         
       </View>
