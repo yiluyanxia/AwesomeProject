@@ -32,13 +32,22 @@ export default class IncompleteScreen extends React.Component {
     return data;
   }
 
+ 
   componentDidMount() {
+    this._getTodolistData();
+  }
+
+  componentWillReceiveProps(){
+    this._getTodolistData();
+  }
+  
+  _getTodolistData(){
     let _this = this;
     AsyncStorage.getItem('todolistData', (err, result) => {
       if(err){
         return;
       }
-      let todoListArr = (result != null) ? JSON.parse(result) :'';
+      let todoListArr = (result != null) ? JSON.parse(result) :[];
       let  todoListFilter= this.filterArr(todoListArr);
       _this.setState({
         todolistData: todoListFilter[false]
@@ -47,9 +56,24 @@ export default class IncompleteScreen extends React.Component {
     })
   }
 
+
+
   _merge(i){
+    let _this = this
+    const todolistData = _this.state.todolistData;
+    todolistData[i].isComplete = !todolistData[i].isComplete
+    _this.setState(preState => ({
+      todolistData:[...preState.todolistData]
+    }))
+
+    let mergeVal = _this.state.todolistData;
    
-    
+    AsyncStorage.setItem('todolistData', JSON.stringify(mergeVal), ()=>{
+      Alert.alert("savemerge success");
+      // AsyncStorage.mergeItem('todolistData',JSON.stringify(mergeVal), () =>{
+        
+      // })
+    });
   }
 
   render() {

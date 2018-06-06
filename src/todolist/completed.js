@@ -32,25 +32,61 @@ export default class CompletedScreen extends Component {
     return data;
   }
 
+  handleSettingsPress = () => {
+    // this.props.navigation.navigate('Home');
+    const {navigation} = this.props;
+    const currentRouteName = navigation.state.routeName;
+
+    if (currentRouteName === "Completed") {
+      Alert.alert("Completed")
+        // reuturn view;
+    }
+  };
+
+  
+
   componentDidMount() {
+    this._getTodolistData();
+
+  }
+
+  componentWillReceiveProps(){
+    this._getTodolistData();
+  }
+
+  _getTodolistData(){
     let _this = this;
     AsyncStorage.getItem('todolistData', (err, result) => {
       if(err){
         return;
       }
-      let todoListArr = (result != null) ? JSON.parse(result) :'';
+      let todoListArr = (result != null) ? JSON.parse(result) :[];
       let  todoListFilter= this.filterArr(todoListArr);
       _this.setState({
         todolistData: todoListFilter[true]
       })
       // Alert.alert("getItem success")
     })
+   
   }
-
+  
 
   _merge(i){
-    
-    
+    let _this = this
+    const todolistData = _this.state.todolistData;
+    todolistData[i].isComplete = !todolistData[i].isComplete
+    _this.setState(preState => ({
+      todolistData:[...preState.todolistData]
+    }))
+
+    let mergeVal = _this.state.todolistData;
+   
+    AsyncStorage.setItem('todolistData', JSON.stringify(mergeVal), ()=>{
+      Alert.alert("savemerge success");
+      // AsyncStorage.mergeItem('todolistData',JSON.stringify(mergeVal), () =>{
+        
+      // })
+    });
   }
 
   render() {
@@ -61,7 +97,7 @@ export default class CompletedScreen extends Component {
         <Button onPress={()=>this._remove} title="remove" />
         <FlatList
           data={todoList}
-          keyExtractor = {(item, index) => item.id}
+          keyExtractor = {(item, index) => item.id.toString()}
           renderItem={({item,index}) => <TodoItem content={item.content} isComplete={item.isComplete}  _merge={this._merge.bind(this,index)}/> }
         />
         

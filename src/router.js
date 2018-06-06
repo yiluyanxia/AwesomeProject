@@ -6,15 +6,34 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import HomeScreen from './home'
-import TodolistScreen from './todolist'
+import AllList from './todolist'
+import AddTodo from './todolist/add'
 import Completed from './todolist/completed'
 import Incomplete from './todolist/incomplete'
 
 
+export const TodolistStack = createStackNavigator({
+  All: {
+    screen: AllList,
+    navigationOptions:{
+      title:'All'
+    }
+  },
+  Add: {
+    screen: AddTodo,
+    navigationOptions:{
+      title:'Add',
+      // headerRight: (
+      //   <Ionicons name="md-checkmark" size={25} color="#448AFF" />
+      // ),
+    }
+
+  }
+})
 
 export const TodolistTabs = createBottomTabNavigator({
   All: {
-    screen: TodolistScreen,
+    screen: TodolistStack,
   },
   Completed: {screen: Completed},
   Incomplete: {screen: Incomplete}
@@ -47,6 +66,7 @@ export const TodolistTabs = createBottomTabNavigator({
   },
 }
 )
+
 
 export const RootStack = createStackNavigator({
   Home: HomeScreen,

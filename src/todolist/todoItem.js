@@ -24,6 +24,7 @@ class TodoItem extends Component{
     });
     this.props._merge()
   }
+
   
   // onPress={this.addClick.bind(this)}
   // <Switch
@@ -33,13 +34,6 @@ class TodoItem extends Component{
   //   }
   // }
   
-  // value={this.state.switchValue} />
-  _Switch(){
-    this.setState(previousState => {
-      return { switchValue: !previousState.switchValue };
-    });
-  }
-
   render (){
     return (
       <View style={styles.todoitem}>
@@ -50,7 +44,7 @@ class TodoItem extends Component{
           
         </TouchableHighlight>
       
-        <Text style={this.state.switchValue? styles.itemtxt:styles.itemtxtOff}>{this.props.content}</Text>
+        <Text style={this.state.switchValue? styles.itemtxt:styles.itemtxtOff} onPress={this.handleSettingsPress}>{this.props.content}</Text>
 
         
         

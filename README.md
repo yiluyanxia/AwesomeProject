@@ -144,12 +144,149 @@ adb devices
 一个警告，暂时不知道如何解决
 isMounted(...) is deprecated in plain JavaScript React classes. Instead, make sure to clean up subscriptions and pending requests in componentWillUnmount to prevent memory leaks.
 
-### react-navigation
+### （二）react-navigation
 安卓没有navigation，官方推荐 react-navigation，目前只研究出来如何在TabNavigation里面放入StackNavigator，还不知道如何在StackNavigator插入TabNavigation。  
 官网的例子和网友的示例都练习了一遍。
 
 
-### todo list
+### （三）todo list
 尝试编写第一个实际的案例。
 
 
+
+Invariant Violation: Tried to get frame for out of range index NaN
+
+This error is located at:
+    in VirtualizedList (at FlatList.js:644)
+    in FlatList (at index.js:115)
+    in RCTView (at View.js:60)
+    in View (at index.js:113)
+    in All (at SceneView.js:10)
+    in SceneView (at StackViewLayout.js:475)
+    in RCTView (at View.js:60)
+    in View (at StackViewLayout.js:474)
+    in RCTView (at View.js:60)
+    in View (at StackViewLayout.js:473)
+    in RCTView (at View.js:60)
+    in View (at createAnimatedComponent.js:154)
+    in AnimatedComponent (at StackViewCard.js:12)
+    in Card (at createPointerEventsContainer.js:28)
+    in Container (at StackViewLayout.js:537)
+    in RCTView (at View.js:60)
+    in View (at StackViewLayout.js:432)
+    in RCTView (at View.js:60)
+    in View (at StackViewLayout.js:431)
+    in StackViewLayout (at withOrientation.js:30)
+    in withOrientation (at StackView.js:58)
+    in RCTView (at View.js:60)
+    in View (at Transitioner.js:146)
+    in Transitioner (at StackView.js:22)
+    in StackView (at createNavigator.js:96)
+    in Navigator (at createKeyboardAwareNavigator.js:11)
+    in KeyboardAwareNavigator (at createNavigationContainer.js:393)
+    in NavigationContainer (at SceneView.js:10)
+    in SceneView (at createTabNavigator.js:10)
+    in RCTView (at View.js:60)
+    in View (at ResourceSavingScene.js:14)
+    in RCTView (at View.js:60)
+    in View (at ResourceSavingScene.js:10)
+    in ResourceSavingScene (at createBottomTabNavigator.js:83)
+    in RCTView (at View.js:60)
+    in View (at createBottomTabNavigator.js:74)
+    in RCTView (at View.js:60)
+    in View (at createBottomTabNavigator.js:73)
+    in TabNavigationView (at createTabNavigator.js:91)
+    in NavigationView (at createNavigator.js:96)
+    in Navigator (at createNavigationContainer.js:393)
+    in NavigationContainer (at SceneView.js:10)
+    in SceneView (at StackViewLayout.js:486)
+    in RCTView (at View.js:60)
+    in View (at createAnimatedComponent.js:154)
+    in AnimatedComponent (at StackViewCard.js:12)
+    in Card (at createPointerEventsContainer.js:28)
+    in Container (at StackViewLayout.js:537)
+    in RCTView (at View.js:60)
+    in View (at StackViewLayout.js:432)
+    in RCTView (at View.js:60)
+    in View (at StackViewLayout.js:431)
+    in StackViewLayout (at withOrientation.js:30)
+    in withOrientation (at StackView.js:58)
+    in RCTView (at View.js:60)
+    in View (at Transitioner.js:146)
+    in Transitioner (at StackView.js:22)
+    in StackView (at createNavigator.js:96)
+    in Navigator (at createKeyboardAwareNavigator.js:11)
+    in KeyboardAwareNavigator (at createNavigationContainer.js:393)
+    in NavigationContainer (at index.js:6)
+    in App (at renderApplication.js:33)
+    in RCTView (at View.js:60)
+    in View (at AppContainer.js:102)
+    in RCTView (at View.js:60)
+    in View (at AppContainer.js:122)
+    in AppContainer (at renderApplication.js:32)
+_getFrameMetrics
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Lists\VirtualizedList.js:1508:6
+_getFrameMetricsApprox
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Lists\VirtualizedList.js:1475:40
+computeWindowedRenderLimits
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Lists\VirtualizeUtils.js:117:47
+<unknown>
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Lists\VirtualizedList.js:1410:14
+getStateFromUpdate
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Renderer\ReactNativeRenderer-dev.js:5937:29
+processUpdateQueue
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Renderer\ReactNativeRenderer-dev.js:6040:41
+updateClassInstance
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Renderer\ReactNativeRenderer-dev.js:7097:8
+updateClassComponent
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Renderer\ReactNativeRenderer-dev.js:8746:8
+beginWork
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Renderer\ReactNativeRenderer-dev.js:9581:10
+performUnitOfWork
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Renderer\ReactNativeRenderer-dev.js:12924:25
+workLoop
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Renderer\ReactNativeRenderer-dev.js:12953:43
+renderRoot
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Renderer\ReactNativeRenderer-dev.js:12996:17
+performWorkOnRoot
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Renderer\ReactNativeRenderer-dev.js:13632:34
+performWork
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Renderer\ReactNativeRenderer-dev.js:13545:26
+performSyncWork
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Renderer\ReactNativeRenderer-dev.js:13506:16
+requestWork
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Renderer\ReactNativeRenderer-dev.js:13392:6
+scheduleWorkImpl
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Renderer\ReactNativeRenderer-dev.js:13259:24
+scheduleWork
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Renderer\ReactNativeRenderer-dev.js:13207:28
+enqueueSetState
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Renderer\ReactNativeRenderer-dev.js:6224:19
+setState
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react\cjs\react.development.js:242:31
+_updateCellsToRender
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Lists\VirtualizedList.js:1396:18
+<unknown>
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Interaction\Batchinator.js:68:8
+processNext
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Interaction\TaskQueue.js:114:10
+_processUpdate
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Interaction\InteractionManager.js:205:6
+<unknown>
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Core\Timers\JSTimers.js:295:23
+_callTimer
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Core\Timers\JSTimers.js:152:6
+_callImmediatesPass
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Core\Timers\JSTimers.js:200:17
+callImmediates
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Core\Timers\JSTimers.js:464:11
+__callImmediates
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\BatchedBridge\MessageQueue.js:327:4
+<unknown>
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\BatchedBridge\MessageQueue.js:145:6
+__guardSafe
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\BatchedBridge\MessageQueue.js:314:6
+flushedQueue
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\BatchedBridge\MessageQueue.js:144:17
+invokeCallbackAndReturnFlushedQueue
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\BatchedBridge\MessageQueue.js:140:11
