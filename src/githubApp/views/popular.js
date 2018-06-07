@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import { AppRegistry, SectionList, StyleSheet, Text, View, FlatList,TouchableOpacity } from 'react-native';
-// import Icon from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-// import Stopwatch from './stopwatch'
-// import Todolist from './todolist'
-// import { createStackNavigator  } from 'react-navigation';
 
 
 class HomeView extends Component {
@@ -18,53 +14,13 @@ class HomeView extends Component {
       items:[
         {
           key: 1,
-          title: "GithubApp",
-          component: "GithubApp",
+          title: "A stopwatch",
+          component: "Stopwatch",
           icon: "access-alarms",
           size: 48,
           color: "#FF8A80"
-        },
-        {
-          key: 2,
-          title: "To do list",
-          component: "Todolist",
-          icon: "format-list-bulleted",
-          size: 48,
-          color: "#FF80AB"
-        },
-        {
-          key: 3,
-          title: "beach access",
-          component: "Todolist",
-          icon: "beach-access",
-          size: 48,
-          color: "#EA80FC"
-        },
-        {
-          key: 4,
-          title: "cake",
-          component: "Todolist",
-          icon: "cake",
-          size: 48,
-          color: "#B388FF"
-        },
-        {
-          key: 5,
-          title: "camera",
-          component: "Todolist",
-          icon: "camera",
-          size: 48,
-          color: "#8C9EFF"
-        },
-        {
-          key: 6,
-          title: "directions bike",
-          component: "Todolist",
-          icon: "directions-bike",
-          size: 48,
-          color: "#82B1FF"
-        },
-        
+        }
+       
       ],
 
     }

@@ -11,6 +11,9 @@ import AddTodo from './todolist/add'
 import Completed from './todolist/completed'
 import Incomplete from './todolist/incomplete'
 
+import GithubApp from './githubApp'
+
+
 
 export const TodolistStack = createStackNavigator({
   All: {
@@ -73,6 +76,7 @@ export const RootStack = createStackNavigator({
   Todolist: {
     screen: TodolistTabs,
   },
+  GithubApp: GithubApp
 },
 {
   mode: 'modal',
