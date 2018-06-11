@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { AppRegistry, SectionList, StyleSheet, Text, View, FlatList,TouchableOpacity } from 'react-native';
+import { AppRegistry,StyleSheet, View, Text, Image, ViewPagerAndroid, } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 
 
-class HomeView extends Component {
+class Wellcome extends Component {
   static navigationOptions = {
     title: 'RN practice',
   };
@@ -12,49 +12,52 @@ class HomeView extends Component {
   constructor(){
     super();
     this.state = {
-      items:[
-        {
-          key: 1,
-          title: "A stopwatch",
-          component: "Stopwatch",
-          icon: "access-alarms",
-          size: 48,
-          color: "#FF8A80"
-        },
-        {
-          key: 2,
-          title: "To do list",
-          component: "Todolist",
-          icon: "format-list-bulleted",
-          size: 48,
-          color: "#FF80AB"
-        }
-      ],
-
+      page: 0,
     }
+  }
+
+  _onPageSelected(e) {
+    this.setState({page: e.nativeEvent.position});
   }
 
   render() {
     return (
      <View style={styles.container}>
-      <FlatList
-        data={this.state.items}
-        keyExtractor = {(item, index) => item.key.toString()}
-        renderItem={({item}) =>
-        <TouchableOpacity onPress={()=>{
-          this.props.navigation.navigate(item.component,{title: item.title})}} >
-          <View style={styles.itembox}>
-            <View style={styles.infobox}>
-              <Icon name={item.icon} size={item.size} style={[styles.iconbox,{color: item.color}]} />
-              <Text style={styles.itemtxt}>{item.title}</Text>
-            </View>
-            <Icon name="chevron-right" size={38} style={[styles.iconbox,{color: "#2196F3"}]} />
-          </View>
-        </TouchableOpacity>
+      <ViewPagerAndroid
+        style={styles.viewPager}
+        initialPage={0}
+        onPageSelected={this._onPageSelected.bind(this)}
+          ref={viewPager => { this.viewPager = viewPager; }}
+        >
+        <View style={styles.page} key="0">
+          <Image style={styles.bg} 
+          source={require('../assets/images/bg.jpg')}
+          />
+          <Text style={styles.txt}>This is a github APP from a beginner. And this is from teacher feng.</Text>
+        </View>
+        <View style={styles.page} key="1">
+          <Image style={styles.bg} 
+            source={require('../assets/images/bg2.jpg')}
+          />
+          <Text style={styles.txt2}
+            onPress={()=>{this.props.navigation.navigate('Popular')}}
+          >
+            Getting Started
+          </Text>
+          
+          
+        </View>
+      </ViewPagerAndroid>
+      <View style={styles.dotView}>
+        <Text 
+          style={[styles.dot,this.state.page == 0 ?styles.dotOn:'']}
+          onPress={()=>this.viewPager.setPage(0)}
+          >0</Text>
+        <Text 
+          style={[styles.dot,this.state.page == 1 ?styles.dotOn:'']}
+          onPress={()=>this.viewPager.setPage(1)}>1</Text>
+      </View>
       
-        }
-      />
-
      </View>
     );
   }
@@ -62,49 +65,62 @@ class HomeView extends Component {
 
 
 
-export default HomeView;
+export default Wellcome;
 
 const styles = StyleSheet.create({
   container: {
    flex: 1,
-   padding: 10,
    backgroundColor: "#efefef",
   },
-  itembox:{
-    height: 150,
-    borderWidth:2,
-    borderColor: "#ddd",
-    marginBottom: 10,
-    borderRadius: 6,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "#fff",
+  bg:{
+    flex:1,
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignItems:'center'
   },
-  infobox:{
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+  viewPager: {
+    flex: 1
   },
-  iconbox:{
-    padding: 20
+  page: {
+    alignItems: 'center',
   },
-  itemtxt: {
-    fontSize: 33,
+  txt:{
+    position: "absolute",
+    color: "#fff",
+    top:90,
+    fontSize: 30,
+    paddingTop: 60,
+    paddingLeft: 40,
+    paddingRight: 40,
   },
+  txt2:{
+    position: "absolute",
+    color: "#fff",
+    top:200,
+    fontSize: 30,
+  },
+  dotView:{
+    position: "absolute",
+    bottom: 30,
+    left:0,
+    right:0,
+    alignContent:'center',
+    alignItems:'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  dot:{
+    fontSize:0,
+    width: 12,
+    height: 12,
+    borderRadius: 12,
+    backgroundColor: '#24292e',
+    margin: 12,
+  },
+  dotOn:{
+    backgroundColor: '#fff',
+    borderWidth: 2,
+    borderColor: '#24292e',
+  }
 
-  sectionHeader: {
-    paddingTop: 2,
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingBottom: 2,
-    fontSize: 14,
-    fontWeight: 'bold',
-    backgroundColor: 'rgba(247,247,247,1.0)',
-  },
-  item: {
-    padding: 10,
-    fontSize: 18,
-    height: 44,
-  },
 })

@@ -11,6 +11,9 @@ export const GithubStack = createStackNavigator({
   Splash: {
     screen: Splash,
   },
+  Wellcome: {
+    screen: Wellcome,
+  },
   Popular: {
     screen: Popular,
   }

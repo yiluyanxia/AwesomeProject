@@ -12,6 +12,15 @@ class Splash extends Component {
     }
   }
 
+  componentDidMount(){
+    this.timer = setTimeout(() => {
+      this.props.navigation.navigate('Wellcome');
+    }, 1000);
+  }
+  componentWillUnmount() {
+    this.timer && clearTimeout(this.timer);
+  }
+
   render() {
     return (
      <View style={styles.container}>
