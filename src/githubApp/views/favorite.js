@@ -1,27 +1,21 @@
 import React, { Component } from 'react';
 import { AppRegistry, SectionList, StyleSheet, Text,TextInput, View, FlatList,TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import DataRepository from '../network/DataRepository'
 
-
-
-class HomeView extends Component {
-  static navigationOptions = {
-    title: 'RN practice',
-  };
+class Favorite extends Component {
 
   render() {
     return (
       <View style={styles.container}>
-        <Text>this is temp</Text>
-     </View>
+        <Text>this is Favorite</Text>
+      </View>
     );
   }
 }
 
 
 
-export default HomeView;
+export default Favorite;
 
 const styles = StyleSheet.create({
   container: {
@@ -30,4 +24,3 @@ const styles = StyleSheet.create({
    backgroundColor: "#efefef",
   }
 })
-

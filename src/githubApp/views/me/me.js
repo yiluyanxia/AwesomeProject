@@ -1,27 +1,26 @@
 import React, { Component } from 'react';
 import { AppRegistry, SectionList, StyleSheet, Text,TextInput, View, FlatList,TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import DataRepository from '../network/DataRepository'
 
-
-
-class HomeView extends Component {
-  static navigationOptions = {
-    title: 'RN practice',
-  };
+class Me extends Component {
 
   render() {
     return (
       <View style={styles.container}>
-        <Text>this is temp</Text>
-     </View>
+        <Text onPress={()=>{
+          this.props.navigation.navigate('CustomTag')}}>tap me to CustomTag</Text>
+        <Text onPress={()=>{
+          this.props.navigation.navigate('SortTag')}}>tap me to sortTag</Text>
+        <Text onPress={()=>{
+          this.props.navigation.navigate('SortTag')}}>tap me to sortTag</Text>
+      </View>
     );
   }
 }
 
 
 
-export default HomeView;
+export default Me;
 
 const styles = StyleSheet.create({
   container: {
@@ -30,4 +29,3 @@ const styles = StyleSheet.create({
    backgroundColor: "#efefef",
   }
 })
-

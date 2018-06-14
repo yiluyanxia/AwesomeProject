@@ -5,9 +5,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 
 class Wellcome extends Component {
-  static navigationOptions = {
-    title: 'RN practice',
-  };
+
 
   constructor(){
     super();
@@ -40,7 +38,7 @@ class Wellcome extends Component {
             source={require('../assets/images/bg2.jpg')}
           />
           <Text style={styles.txt2}
-            onPress={()=>{this.props.navigation.navigate('Popular')}}
+            onPress={()=>{this.props.navigation.navigate('GithubStack')}}
           >
             Getting Started
           </Text>

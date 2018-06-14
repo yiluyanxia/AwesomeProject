@@ -157,5 +157,14 @@ isMounted(...) is deprecated in plain JavaScript React classes. Instead, make su
 ### （四）GitHubApp
 跟着疯老师手把手教学写GitHubApp
 
+初步成型，最终还是启用了BIOS的VT,Android Studio自带的模拟器终于跑起来了，哈哈。
+![githubApp_01](./docs/githubApp_01.png)  
+
+其中遇到各种各样的bug，有心情在整理记录。
+这是小白的开发日记 *（手动笑哭）* 。
+
+
+
+
 
 

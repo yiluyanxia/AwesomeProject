@@ -4,45 +4,61 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import DataRepository from '../network/DataRepository'
 import ScrollableTabView ,{ScrollableTabBar} from 'react-native-scrollable-tab-view'
 import RepositoriesCell from '../components/repositoriesCell'
-
+import LanguageUtil,{FLAG_LANGUAGE} from '../util/LanguageUtil'
 
 const URL = "https://api.github.com/search/repositories?q="
 const QUERY_STR ="&sort=star"
 
-class HomeView extends Component {
+class Popular extends Component {
   static navigationOptions = {
-    title: 'RN practice',
+    headerTitle: 'RN practice',
   };
+  
+  constructor(props){
+    super(props);
+    this.LanguageUtil = new LanguageUtil(FLAG_LANGUAGE.flag_key);
+    this.state={
+      languages:[]
+    }
+  }
+  _loadData(){
+    this.LanguageUtil.fetch().then((result) => {
+      if(result){
+        this.setState({
+        languages:result
+        })
+      }
+    }).catch(error => {
+      console.log(error);
+    })
+  }
+  componentDidMount(){
+    this._loadData();
+  }
+  componentWillReceiveProps(){
+    this._loadData();
+    
+  }
 
+  
   render() {
-    return (
-      <View style={styles.container}>
-
-      <ScrollableTabView
+    let content = this.state.languages.length>0?
+    <ScrollableTabView
         tabBarBackgroundColor="#6570e2"
         tabBarActiveTextColor="#fff"
         tabBarInactiveTextColor="#fefefe"
         tabBarUnderlineStyle={{backgroundColor:"#fff"}}
       >
-        <PopularTab tabLabel="Java"></PopularTab>
-        <PopularTab tabLabel="React"></PopularTab>
-        <PopularTab tabLabel="Vue"></PopularTab>
-        <PopularTab tabLabel="IOS"></PopularTab>
+        {this.state.languages.map((result,i,arr)=>{
+          let lan = arr[i];
+          return lan.checked? <PopularTab key={i} tabLabel={lan.name}></PopularTab>: null
+        })}
+        
       </ScrollableTabView>
-
-      {/* <TextInput 
-        style={{height:40,fontSize:30}}
-        onChangeText = {text=>this.text=text}
-        />
-      <Text  
-        onPress={()=>this.onLoad()}
-        >
-        加载
-      </Text>
-      linear-gradient(-180deg, #6570e2 0%, #3b41af 90%)
-      <Text>{JSON.stringify(this.state.result)}</Text> */}
-      
-
+    :null;
+    return (
+      <View style={styles.container}>
+      {content}
      </View>
     );
   }
@@ -60,6 +76,7 @@ class PopularTab extends Component{
   componentDidMount(){
     this.onLoad();
   }
+  
 
   onLoad(){
 
@@ -88,7 +105,7 @@ class PopularTab extends Component{
 }
 
 
-export default HomeView;
+export default Popular;
 
 const styles = StyleSheet.create({
   container: {

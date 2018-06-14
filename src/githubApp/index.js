@@ -1,8 +1,8 @@
 import React,{Component} from 'react';
-import { GithubStack } from './router';
+import { AppStack } from './router';
 
 export default class App extends Component {
   render(){
-    return <GithubStack />
+    return <AppStack />
   }
 }
