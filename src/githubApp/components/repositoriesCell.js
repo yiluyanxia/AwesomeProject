@@ -6,7 +6,9 @@ class repositoriesCell extends Component {
   
   render() {
     return (
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={this.props.onSelect}  
+      >
         <View style={styles.cell}>
           <Text style={styles.fullName}>{this.props.dataItem.full_name}</Text>
           <Text style={styles.desc}>{this.props.dataItem.description}</Text>

@@ -31,11 +31,6 @@ class CustomTag extends Component {
       this.props.navigation.goBack(null);
       return;
     }
-    if(this.isRemoveKey){
-      for(let i =0,l=this.changeValue.length; i<l;i++){
-        ArrayUtil.removeArr(this.state.dataArr,this.changeValue[i])
-      }
-    }
     this.LanguageUtil.save(this.state.dataArr);
     this.props.navigation.goBack(null);
   }
@@ -57,7 +52,7 @@ class CustomTag extends Component {
   static navigationOptions = ({ navigation }) => {
   
     const params = navigation.state.params || {};
-    let _title = params.isRemove ? 'Remove Tag' : 'Custom Tag';
+    let _title = this.isRemoveKey ? 'Remove Tag' : 'Custom Tag';
     return {
       title: _title,
       headerLeft:(
@@ -103,7 +98,7 @@ class CustomTag extends Component {
        
   }
   onClick(data) {
-    if(!this.isRemoveKey)data.checked=!data.checked;
+    data.checked=!data.checked;
     ArrayUtil.updateArray(this.changeValue,data);
   }
 

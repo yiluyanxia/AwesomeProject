@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, SectionList, StyleSheet, Text,TextInput, View, FlatList,TouchableOpacity } from 'react-native';
+import { StyleSheet,View, FlatList,Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DataRepository from '../network/DataRepository'
 import ScrollableTabView ,{ScrollableTabBar} from 'react-native-scrollable-tab-view'
@@ -51,7 +51,7 @@ class Popular extends Component {
       >
         {this.state.languages.map((result,i,arr)=>{
           let lan = arr[i];
-          return lan.checked? <PopularTab key={i} tabLabel={lan.name}></PopularTab>: null
+          return lan.checked? <PopularTab key={i} tabLabel={lan.name} {...this.props}></PopularTab>: null
         })}
         
       </ScrollableTabView>
@@ -79,16 +79,44 @@ class PopularTab extends Component{
   
 
   onLoad(){
+    let url = URL+this.props.tabLabel+QUERY_STR; 
+    this.dataRepository.fetchRepository(url).then(result => {
+      let items =result&&result.items?result.items:result?result:[];
+      this.setState({dataArr: items});
+      if(result&&result.update_date&&!this.dataRepository.checkData(result.update_date)){
+        // Alert.alert('数据过期')
+        return this.dataRepository.fetchNetRepository(url);
+      }else{
+        // Alert.alert('显示缓存数据')
+      }
+    }).then(items=>{
+      if(!items || items.length===0)return;
+      this.setState({
+        dataArr: items
+      })
+      // Alert.alert('显示网络数据')
+    })
+    .catch(error=>{
+      console.log(error)
+    })
+  }
 
+  onLoadByHand(){
     let url = URL+this.props.tabLabel+QUERY_STR; 
     this.dataRepository.fetchNetRepository(url).then(result => {
-      this.setState({dataArr: result.items})
+      this.setState({dataArr: result});
+      // Alert.alert('手动刷新网络数据')
+
     }).catch(error=>{
       console.log(error)
     })
   }
   _onRefresh = () =>{
-
+    this.onLoadByHand()
+  }
+ 
+  onSelect(item){
+    this.props.navigation.navigate('Detail',{itemVal: item})
   }
   render(){
     return(
@@ -97,7 +125,11 @@ class PopularTab extends Component{
         keyExtractor = {(item, index) => item.id}
         onRefresh={this._onRefresh}
         refreshing={false}
-        renderItem={({item}) => <RepositoriesCell dataItem={item} />}
+        renderItem={({item}) => <RepositoriesCell dataItem={item} 
+        onSelect={this.onSelect.bind(this,item)}
+        // onSelect={(item)=>this.onSelect(item)}
+      />
+      }
       />     
 
     )

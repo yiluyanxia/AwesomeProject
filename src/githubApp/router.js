@@ -11,10 +11,11 @@ import Wellcome from './views/wellcome'
 import Popular from './views/popular'
 import Trending from './views/trending'
 import Favorite from './views/favorite'
+import Detail from './views/detail'
+
 import Me from './views/me/me'
 import CustomTag from './views/me/customTag'
 import SortTag from './views/me/sortTag'
-
 
 export const GithubTabs = createBottomTabNavigator({
   Popular:{
@@ -68,16 +69,16 @@ export const GithubStack = createStackNavigator({
   },
   CustomTag:{
     screen: CustomTag,
-    navigationOptions:{
-      title:'Custom Tag',
-    }
   },
   SortTag:{
     screen: SortTag,
     navigationOptions:{
       title:'SortTag Tag',
     }
-  }
+  },
+  Detail:{
+    screen: Detail,
+  },
 },{
   navigationOptions:({navigation})=>({
     headerStyle:{

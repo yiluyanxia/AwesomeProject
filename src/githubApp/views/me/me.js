@@ -8,11 +8,11 @@ class Me extends Component {
     return (
       <View style={styles.container}>
         <Text onPress={()=>{
-          this.props.navigation.navigate('CustomTag')}}>tap me to CustomTag</Text>
+          this.props.navigation.navigate('CustomTag',{isRemove:false})}}>tap me to CustomTag</Text>
         <Text onPress={()=>{
           this.props.navigation.navigate('SortTag')}}>tap me to sortTag</Text>
         <Text onPress={()=>{
-          this.props.navigation.navigate('SortTag')}}>tap me to sortTag</Text>
+          this.props.navigation.navigate('CustomTag',{isRemove:true})}}>tap me to RemoveTag</Text>
       </View>
     );
   }
