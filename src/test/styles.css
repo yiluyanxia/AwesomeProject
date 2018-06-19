@@ -3,4 +3,5 @@
   border-radius: 10;
   justify-content: space-between;
   color: #f00;
+flex-wrap: nowrap
 }

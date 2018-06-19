@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet,View, FlatList,Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import DataRepository from '../network/DataRepository'
+import DataRepository,{FLAG_STORAGE} from '../network/DataRepository'
 import ScrollableTabView ,{ScrollableTabBar} from 'react-native-scrollable-tab-view'
 import RepositoriesCell from '../components/repositoriesCell'
 import LanguageUtil,{FLAG_LANGUAGE} from '../util/LanguageUtil'
@@ -10,8 +10,9 @@ const URL = "https://api.github.com/search/repositories?q="
 const QUERY_STR ="&sort=star"
 
 class Popular extends Component {
+
   static navigationOptions = {
-    headerTitle: 'RN practice',
+    title: 'Popular111',
   };
   
   constructor(props){
@@ -67,7 +68,7 @@ class Popular extends Component {
 class PopularTab extends Component{
   constructor(){
     super();
-    this.dataRepository = new DataRepository();
+    this.DataRepository = new DataRepository(FLAG_STORAGE.flag_popular);
     this.state = {
       result:'',
       dataArr:[]
@@ -80,12 +81,12 @@ class PopularTab extends Component{
 
   onLoad(){
     let url = URL+this.props.tabLabel+QUERY_STR; 
-    this.dataRepository.fetchRepository(url).then(result => {
+    this.DataRepository.fetchRepository(url).then(result => {
       let items =result&&result.items?result.items:result?result:[];
       this.setState({dataArr: items});
-      if(result&&result.update_date&&!this.dataRepository.checkData(result.update_date)){
+      if(result&&result.update_date&&!this.DataRepository.checkData(result.update_date)){
         // Alert.alert('数据过期')
-        return this.dataRepository.fetchNetRepository(url);
+        return this.DataRepository.fetchNetRepository(url);
       }else{
         // Alert.alert('显示缓存数据')
       }
@@ -103,7 +104,7 @@ class PopularTab extends Component{
 
   onLoadByHand(){
     let url = URL+this.props.tabLabel+QUERY_STR; 
-    this.dataRepository.fetchNetRepository(url).then(result => {
+    this.DataRepository.fetchNetRepository(url).then(result => {
       this.setState({dataArr: result});
       // Alert.alert('手动刷新网络数据')
 

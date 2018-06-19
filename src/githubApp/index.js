@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import { AppStack } from './router';
+import { AppStack, extraStack } from './router';
 
 export default class App extends Component {
   render(){

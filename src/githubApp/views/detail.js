@@ -5,12 +5,12 @@ import DataRepository from '../network/DataRepository'
 
 
 var WEBVIEW_REF = 'webview';
-
-class HomeView extends Component {
+const TRENDING_URL ='https://github.com/'
+class Detail extends Component {
 
   constructor(props){
     super(props);
-    let url = this.props.navigation.state.params.itemVal.html_url;
+    let url = this.props.navigation.state.params.itemVal.html_url?this.props.navigation.state.params.itemVal.html_url: TRENDING_URL+this.props.navigation.state.params.itemVal.fullName;
     // let title = this.props.navigation.state.params.item.full_name;
     this.state ={
       url: url,
@@ -27,7 +27,7 @@ class HomeView extends Component {
     
     const params = navigation.state.params || {};
     return {
-      title: params.itemVal.full_name,
+      title: params.itemVal.full_name?params.itemVal.full_name:params.itemVal.fullName,
       headerLeft:(
         <TouchableOpacity style={{paddingLeft:20}} onPress={params.goBackFun}>
           <Ionicons name="md-arrow-back" size={24} color="#fff" />
@@ -80,7 +80,7 @@ class HomeView extends Component {
   }
 }
 
-export default HomeView;
+export default Detail;
 
 const styles = StyleSheet.create({
   container: {
