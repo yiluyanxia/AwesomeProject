@@ -28,13 +28,17 @@ import SortTag from './views/me/sortTag'
 export const PopularStack = createStackNavigator({
   Popular: {
     screen: Popular,
-  },
+  }
 }, {
   navigationOptions: ({
     navigation
   }) => ({
     headerStyle: {
-      backgroundColor: '#6570e2'
+      backgroundColor: '#6570e2',
+      borderBottomColor: 'transparent',
+      borderWidth: 0,
+      elevation: 0,
+      shadowOpacity: 0,
     },
     headerTintColor: '#fff',
     headerTitleStyle: {
@@ -53,12 +57,16 @@ export const TrendingStack = createStackNavigator({
     navigation
   }) => ({
     headerStyle: {
-      backgroundColor: '#6570e2'
+      backgroundColor: '#6570e2',
+      borderBottomColor: 'transparent',
+      borderWidth: 0,
+      elevation: 0,
+      shadowOpacity: 0,
     },
     headerTintColor: '#fff',
     headerTitleStyle: {
       flex: 1,
-      textAlign: 'center'
+      textAlign: 'center',
     }
   })
 })
@@ -87,9 +95,7 @@ export const MeStack = createStackNavigator({
     screen: Me,
   },
 }, {
-  navigationOptions: ({
-    navigation
-  }) => ({
+  navigationOptions: ({navigation}) => ({
     headerStyle: {
       backgroundColor: '#6570e2'
     },
@@ -115,16 +121,9 @@ export const GithubTabs = createBottomTabNavigator({
     screen: MeStack
   }
 }, {
-  navigationOptions: ({
-    navigation
-  }) => ({
-    tabBarIcon: ({
-      focused,
-      tintColor
-    }) => {
-      const {
-        routeName
-      } = navigation.state;
+    navigationOptions: ({ navigation}) => ({
+    tabBarIcon: ({ focused, tintColor}) => {
+      const {routeName} = navigation.state;
       let iconName;
       if (routeName === 'Popular') {
         iconName = `ios-flame${focused ? '' : '-outline'}`
@@ -135,16 +134,7 @@ export const GithubTabs = createBottomTabNavigator({
       } else if (routeName === 'Me') {
         iconName = `ios-person${focused ? '' : '-outline'}`
       }
-      return <Ionicons name = {
-        iconName
-      }
-      size = {
-        25
-      }
-      color = {
-        tintColor
-      }
-      />
+      return <Ionicons name = {iconName} size = {25} color = {tintColor} />
 
     },
   }),
@@ -158,7 +148,7 @@ export const GithubTabs = createBottomTabNavigator({
       backgroundColor: '#fff',
     }
   }
-}, )
+})
 
 export const ExtraStack = createStackNavigator({
   CustomTag: {
@@ -166,39 +156,60 @@ export const ExtraStack = createStackNavigator({
   },
   SortTag: {
     screen: SortTag,
-    navigationOptions: {
-      title: 'SortTag Tag',
-    }
   },
-  Detail: {
-    screen: Detail,
-  },
-}, {
-  navigationOptions: ({
-    navigation
-  }) => ({
-    headerStyle: {
-      backgroundColor: '#6570e2'
-    },
-    headerTintColor: '#fff',
-    headerTitleStyle: {
-      flex: 1,
-      textAlign: 'center'
-    }
-  })
+  Detail:{
+    screen:Detail
+  }
 })
 
 export const GithubStack = createStackNavigator({
   GithubTabs: {
     screen: GithubTabs,
   },
-  ExtraStack: {
-    screen: ExtraStack
+  CustomTag: {
+    screen: CustomTag,
+  },
+  SortTag: {
+    screen: SortTag,
+  },
+  Detail:{
+    screen:Detail
   }
-}, {
-  mode: 'card',
-  headerMode: 'none',
-})
+},{
+  navigationOptions:({navigation})=>({
+
+    //这里是一个对象
+    headerStyle: {
+      backgroundColor: '#6570e2',
+      height:0
+    },
+
+    //这里返回一个对象 和 上面的是一样的吗  如果不一样怎么改
+    // headerStyle:()=>{
+    //   var hh = {backgroundColor: '#6570e2'}
+    //   return {hh};
+    // },
+
+    // headerStyle:()=>{
+    //   const {routeName} = navigation.state;
+    //   let heightVal = 0;
+    //   // if(routeName=== 'CustomTag'){
+    //   //   heightVal = 0
+    //   // }
+    //   var hh = {backgroundColor: '#6570e2'}
+    //   return hh;
+    //   // return <View style={{height:heightVal}}>111</View>
+    // },
+    
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      flex: 1,
+      textAlign: 'center'
+    }
+  })
+  
+}
+)
 
 export const AppStack = createStackNavigator({
   Splash: {
@@ -209,7 +220,7 @@ export const AppStack = createStackNavigator({
   },
   GithubStack: {
     screen: GithubStack
-  },
+  }
 }, {
   initialRouteName: 'Splash',
   mode: 'card',

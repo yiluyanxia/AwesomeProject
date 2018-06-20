@@ -3,5 +3,19 @@
   border-radius: 10;
   justify-content: space-between;
   color: #f00;
-flex-wrap: nowrap
+  flex-wrap: nowrap;
+  background: rgb(0, 0, 0)
+}
+
+.box{
+  width: 20px;
+  height: 20px;
+}
+.box::before{
+  width: 10px;
+  height: 10px;
+}
+.box::after{
+  width: 20px;
+  height: 20px;
 }

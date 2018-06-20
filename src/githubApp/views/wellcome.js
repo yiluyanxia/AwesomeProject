@@ -38,7 +38,7 @@ class Wellcome extends Component {
             source={require('../assets/images/bg2.jpg')}
           />
           <Text style={styles.txt2}
-            onPress={()=>{this.props.navigation.navigate('GithubStack')}}
+            onPress={()=>{this.props.navigation.navigate('GithubTabs')}}
           >
             Getting Started
           </Text>

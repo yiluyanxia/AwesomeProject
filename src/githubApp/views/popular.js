@@ -12,7 +12,7 @@ const QUERY_STR ="&sort=star"
 class Popular extends Component {
 
   static navigationOptions = {
-    title: 'Popular111',
+    title: 'Popular',
   };
   
   constructor(props){

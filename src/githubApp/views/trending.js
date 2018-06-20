@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet,View, FlatList,Alert,Text,TouchableOpacity } from 'react-native';
+import { StyleSheet,View, FlatList,Alert,Text,TouchableOpacity,TouchableHighlight } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -7,56 +7,21 @@ import DataRepository,{FLAG_STORAGE} from '../network/DataRepository'
 import ScrollableTabView ,{ScrollableTabBar} from 'react-native-scrollable-tab-view'
 import TrendingCell from '../components/trendingCell'
 import LanguageUtil,{FLAG_LANGUAGE} from '../util/LanguageUtil'
+import ModalDropdown from 'react-native-modal-dropdown';
 
-import {
-  Menu,
-  MenuOptions,
-  MenuOption,
-  MenuTrigger,
-} from 'react-native-popup-menu';
+const TRENDING_OPTIONS = ['Today', 'This week', 'This month'];
+const TimeSpanArray = ['since=daily','since=weekly','since=monthly']
 const API_URL = "https://github.com/trending/"
-
 class Trending extends Component {
-
-  static navigationOptions = ({ navigation }) => {
-  
-    const params = navigation.state.params || {};
-    return {
-      headerTitle: 'Trending'
-      
-      // headerTitle:(
-        // <Menu>
-        //   <MenuTrigger text='Select action' />
-        //   <MenuOptions>
-        //     <MenuOption onSelect={() => alert(`Save`)} text='Save' />
-        //     <MenuOption onSelect={() => alert(`Delete`)} >
-        //       <Text style={{color: 'red'}}>Delete</Text>
-        //     </MenuOption>
-        //     <MenuOption onSelect={() => alert(`Not called`)} disabled={true} text='Disabled' />
-        //   </MenuOptions>
-        // </Menu>
-      // ),
-      // headerLeft:(
-      //   <TouchableOpacity style={{paddingLeft:20}} onPress={params.goBackFun}>
-      //     <Ionicons name="md-arrow-back" size={24} color="#fff" />
-      //   </TouchableOpacity>
-      // ),
-      // headerRight: (
-      //   <TouchableOpacity style={{paddingRight:20}} onPress={params.onSave}>
-      //     <Ionicons name="md-checkmark" size={24} color="#fff" />
-      //   </TouchableOpacity>
-      // )
-    };
-  };
-
-  
   constructor(props){
     super(props);
     this.LanguageUtil = new LanguageUtil(FLAG_LANGUAGE.flag_language);
     this.state={
-      languages:[]
+      languages:[],
+      timeSpan: TimeSpanArray[0],
     }
   }
+  
   _loadData(){
     this.LanguageUtil.fetch().then((result) => {
       if(result){
@@ -68,14 +33,61 @@ class Trending extends Component {
       console.log(error);
     })
   }
+
+  componentWillMount() {
+    this.props.navigation.setParams({ onSelect: this._onSelect });
+  }
+
   componentDidMount(){
     this._loadData();
   }
+
   componentWillReceiveProps(){
     this._loadData();
-    
   }
-
+  _onSelect=(idx, value)=>{
+      this.setState({
+        timeSpan: TimeSpanArray[idx],
+      })
+    // if(idx==0){
+    //   this.setState({
+    //     timeSpan: TimeSpanArray[0],
+    //   })
+    // }
+    // if(idx==1){
+    //   this.setState({
+    //     timeSpan: TimeSpanArray[1],
+    //   })
+    // }
+    // if(idx==2){
+    //   this.setState({
+    //     timeSpan: TimeSpanArray[2],
+    //   })
+    // }
+  }
+  static navigationOptions = ({ navigation }) => {
+  
+    const params = navigation.state.params || {};
+    let _title = params.isRemove ? 'Remove Tag' : 'Custom Tag';
+    return {
+      headerTitle:(
+        <View style={styles.dropdownView}>
+          <ModalDropdown 
+            style={styles.dropdown}
+            textStyle={styles.dropdown_text}
+            dropdownStyle={styles.dropdown_list}
+            dropdownTextStyle={styles.dropdown_option}
+            dropdownTextHighlightStyle={styles.dropdown_highligh}
+            options={TRENDING_OPTIONS}
+            defaultValue={TRENDING_OPTIONS[0]}
+            onSelect={params.onSelect}
+          >
+          </ModalDropdown>
+        </View>
+      ),
+      
+    };
+  };
   
   render() {
     let content = this.state.languages.length>0?
@@ -87,14 +99,14 @@ class Trending extends Component {
       >
         {this.state.languages.map((result,i,arr)=>{
           let lan = arr[i];
-          return lan.checked? <TrendingTab key={i} tabLabel={lan.name} {...this.props}></TrendingTab>: null
+          return lan.checked? <TrendingTab key={i} tabLabel={lan.name} timeSpan={this.state.timeSpan} {...this.props}></TrendingTab>: null
         })}
         
       </ScrollableTabView>
     :null;
     return (
       <View style={styles.container}>
-      {content}
+        {content}
      </View>
     );
   }
@@ -110,16 +122,24 @@ class TrendingTab extends Component{
     }
   }
   componentDidMount(){
-    this.onLoad();
-  }
-  
-  getFetchUrl(timeTag,category){
-    return API_URL + category + timeTag.searchText;
+    this.onLoad(this.props.timeSpan);
   }
 
-  onLoad(){
+  componentWillReceiveProps(nextProps){
+    if(nextProps.timeSpan!==this.props.timeSpan){
+      this.onLoad(nextProps.timeSpan)
+    }
+
+  }
+  
+  getFetchUrl(timeSpan,category){
+    return API_URL + category + '?' + timeSpan;
+  }
+
+  onLoad(timeSpan){
     // let url = URL+this.props.tabLabel+QUERY_STR; 
-    let url = this.getFetchUrl('?since=daily',this.props.tabLabel); 
+    // let url = this.getFetchUrl('?since=daily',this.props.tabLabel); 
+    let url = this.getFetchUrl(timeSpan,this.props.tabLabel); 
     this.DataRepository.fetchRepository(url).then(result => {
       let items =result&&result.items?result.items:result?result:[];
       this.setState({dataArr: items});
@@ -141,8 +161,8 @@ class TrendingTab extends Component{
     })
   }
 
-  onLoadByHand(){
-    let url = this.getFetchUrl('?since=daily',this.props.tabLabel);
+  onLoadByHand(timeSpan){
+    let url = this.getFetchUrl(timeSpan,this.props.tabLabel);
     this.DataRepository.fetchNetRepository(url).then(result => {
       this.setState({dataArr: result});
       // Alert.alert('手动刷新网络数据')
@@ -152,7 +172,7 @@ class TrendingTab extends Component{
     })
   }
   _onRefresh = () =>{
-    this.onLoadByHand()
+    this.onLoadByHand(this.props.timeSpan)
   }
  
   onSelect(item){
@@ -181,7 +201,37 @@ export default Trending;
 
 const styles = StyleSheet.create({
   container: {
-   flex: 1,
-   backgroundColor: "#efefef",
+    flex: 1,
+    backgroundColor: "#efefef",
+  },
+  dropdownView:{
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent:'center',
+  },
+  dropdown: {
+    width: 120,
+  },
+  dropdown_text:{
+    color:'#fff',
+    fontSize:20,
+    fontWeight: 'bold',
+    textAlign:'center',
+  },
+  dropdown_list:{
+    width: 120,
+    height: 152,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  dropdown_option:{
+    height:50,
+    textAlign:'center',
+    fontSize:18,
+    color:'#fff',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    borderWidth: 0,
+  },
+  dropdown_highligh:{
+    color:'#fff',
   }
 })

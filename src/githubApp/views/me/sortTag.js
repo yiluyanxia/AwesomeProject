@@ -64,7 +64,7 @@ class SortTag extends Component {
 
   _onSave= ()=>{
     if(ArrayUtil.isEqual(this.originalCheckedArr,this.state.checkedArr)){
-      this.props.navigation.goBack(null);
+      this.props.navigation.goBack();
       return;
     }
     this.getSortResult();
@@ -82,7 +82,7 @@ class SortTag extends Component {
 
   _goBackFun=()=>{
     if(!ArrayUtil.isEqual(this.originalCheckedArr,this.state.checkedArr)){
-      this.props.navigation.goBack(null);
+      this.props.navigation.goBack();
       return;
     }
     Alert.alert(
@@ -90,7 +90,7 @@ class SortTag extends Component {
       'Discard your reorder?',
       [
         {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-        {text: 'Discard', onPress: () => { this.props.navigation.goBack(null);}},
+        {text: 'Discard', onPress: () => { this.props.navigation.goBack();}},
       ],
       { cancelable: false }
     )
@@ -112,7 +112,11 @@ class SortTag extends Component {
           <Ionicons name="md-checkmark" size={24} color="#fff" />
         </TouchableOpacity>
       ),
-      tabBarVisible: false,
+      title: 'Sort Tag',
+      headerStyle:{
+        backgroundColor: '#6570e2',
+        height:56,
+      }
     };
   };
  

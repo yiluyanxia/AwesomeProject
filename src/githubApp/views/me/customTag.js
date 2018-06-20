@@ -28,7 +28,7 @@ class CustomTag extends Component {
   }
   _onSave= ()=>{
     if(this.changeValue.length===0){
-      this.props.navigation.goBack(null);
+      this.props.navigation.goBack();
       return;
     }
     if(this.isRemoveKey){
@@ -37,11 +37,11 @@ class CustomTag extends Component {
       }
     }
     this.LanguageUtil.save(this.state.dataArr);
-    this.props.navigation.goBack(null);
+    this.props.navigation.goBack();
   }
   _goBackFun=()=>{
     if(this.changeValue.length===0){
-      this.props.navigation.goBack(null);
+      this.props.navigation.goBack();
       return;
     }
     Alert.alert(
@@ -49,7 +49,7 @@ class CustomTag extends Component {
       'Discard your changes?',
       [
         {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-        {text: 'Discard', onPress: () => { this.props.navigation.goBack(null);}},
+        {text: 'Discard', onPress: () => { this.props.navigation.goBack();}},
       ],
       { cancelable: false }
     )
@@ -69,7 +69,11 @@ class CustomTag extends Component {
         <TouchableOpacity style={{paddingRight:20}} onPress={params.onSave}>
           <Ionicons name="md-checkmark" size={24} color="#fff" />
         </TouchableOpacity>
-      )
+      ),
+      headerStyle:{
+        backgroundColor: '#6570e2',
+        height:56,
+      }
     };
   };
 
