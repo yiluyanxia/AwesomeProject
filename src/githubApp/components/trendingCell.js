@@ -3,9 +3,29 @@ import { AppRegistry, SectionList, StyleSheet, Text,TextInput, View, FlatList,To
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import HTMLView from 'react-native-htmlview';
 class TrendingCell extends Component {
+  constructor(props){
+    super(props);
+    this.state={
+      isFavorite:this.props.dataItem.isFavorite,
+      favoriteIconName:this.props.dataItem.isFavorite?'md-heart':'md-heart-outline'
+    }
+  }
+  componentWillReceiveProps(nextProps){
+    this.setFavoriteState(nextProps.dataItem.isFavorite)
+  }
+  setFavoriteState(isFavorite){
+    this.setState({
+      isFavorite: isFavorite,
+      favoriteIconName: isFavorite?'md-heart':'md-heart-outline'
+    })
+  }
+  toggleFavorite(isFavorite){
+    this.setFavoriteState(!this.state.isFavorite)
+    this.props.onFavorite(this.props.dataItem.item,!this.state.isFavorite)
+  }
   
   render() {
-    const dataItem = this.props.dataItem
+    const dataItem = this.props.dataItem.item?this.props.dataItem.item:this.props.dataItem
     const description = '<p>'+dataItem.description+'</p>'
     return (
       <TouchableOpacity
@@ -38,7 +58,9 @@ class TrendingCell extends Component {
               })}   
             </View>
            
-            <Ionicons name="md-heart-outline" size={24} color="rgb(36, 41, 46)"/>
+            <TouchableOpacity onPress={()=>this.toggleFavorite()}>
+              <Ionicons name={this.state.favoriteIconName} size={24} color="#6570e2"/>
+            </TouchableOpacity>
   
           </View>
           

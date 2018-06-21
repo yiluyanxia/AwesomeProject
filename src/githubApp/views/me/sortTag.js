@@ -35,7 +35,8 @@ class SortTag extends Component {
     }
   }
   componentDidMount(){
-    this.LanguageUtil = new LanguageUtil(FLAG_LANGUAGE.flag_key);
+    // this.LanguageUtil = new LanguageUtil(FLAG_LANGUAGE.flag_key);
+    this.LanguageUtil = new LanguageUtil(this.props.navigation.state.params.flag);
     this.props.navigation.setParams({ onSave: this._onSave });
     this.props.navigation.setParams({ goBackFun: this._goBackFun });
     this._loadData();
@@ -100,7 +101,9 @@ class SortTag extends Component {
   static navigationOptions = ({ navigation }) => {
     
     const params = navigation.state.params || {};
+    let _title = params.flag===FLAG_LANGUAGE.flag_key?'Sort Tag':'Sort Language';
     return {
+      title: _title,
       headerLeft:(
         <TouchableOpacity style={{paddingLeft:20}} onPress={params.goBackFun}>
           <Ionicons name="md-arrow-back" size={24} color="#fff" />
@@ -112,7 +115,6 @@ class SortTag extends Component {
           <Ionicons name="md-checkmark" size={24} color="#fff" />
         </TouchableOpacity>
       ),
-      title: 'Sort Tag',
       headerStyle:{
         backgroundColor: '#6570e2',
         height:56,

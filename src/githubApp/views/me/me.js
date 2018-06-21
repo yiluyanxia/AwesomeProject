@@ -16,7 +16,10 @@ class Me extends Component {
           navigate('CustomTag',{isRemove:false,flag:FLAG_LANGUAGE.flag_language})}}>tap me to Custom Language</Text>
 
         <Text onPress={()=>{
-          navigate('SortTag',{isRemove:false})}}>tap me to sortTag</Text>
+          navigate('SortTag',{flag:FLAG_LANGUAGE.flag_key})}}>tap me to sortTag</Text>
+
+        <Text onPress={()=>{
+          navigate('SortTag',{flag:FLAG_LANGUAGE.flag_language})}}>tap me to sort Language</Text>
 
         <Text onPress={()=>{
           navigate('CustomTag',{isRemove:true})}}>tap me to RemoveTag</Text>

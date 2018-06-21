@@ -7,7 +7,8 @@ import ArrayUtil from '../../util/ArrayUtil'
 class CustomTag extends Component {
   constructor(props){
     super(props);
-    this.LanguageUtil = new LanguageUtil(FLAG_LANGUAGE.flag_key);
+    // this.LanguageUtil = new LanguageUtil(FLAG_LANGUAGE.flag_key);
+    this.LanguageUtil = new LanguageUtil(this.props.navigation.state.params.flag);
     this.changeValue = [];
     this.isRemoveKey = this.props.navigation.state.params.isRemove ?true:false
     this.state={
@@ -58,6 +59,7 @@ class CustomTag extends Component {
   
     const params = navigation.state.params || {};
     let _title = params.isRemove ? 'Remove Tag' : 'Custom Tag';
+    _title = params.flag===FLAG_LANGUAGE.flag_language?'Custom Language':'Custom Tag';
     return {
       title: _title,
       headerLeft:(
@@ -78,10 +80,6 @@ class CustomTag extends Component {
   };
 
   
-
-  // static navigationOptions = {
-  //   title: 'RN practice',
-  // };
   componentWillMount() {
     this.props.navigation.setParams({ onSave: this._onSave });
     this.props.navigation.setParams({ goBackFun: this._goBackFun });

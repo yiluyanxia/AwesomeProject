@@ -3,32 +3,62 @@ import { AppRegistry, SectionList, StyleSheet, Text,TextInput, View, FlatList,To
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 class repositoriesCell extends Component {
-  
+  constructor(props){
+    super(props);
+    this.state={
+      isFavorite:this.props.dataItem.isFavorite,
+      favoriteIconName:this.props.dataItem.isFavorite?'md-heart':'md-heart-outline'
+    }
+  }
+  componentWillReceiveProps(nextProps){
+    this.setFavoriteState(nextProps.dataItem.isFavorite)
+  }
+  setFavoriteState(isFavorite){
+    this.props.dataItem.isFavorite =isFavorite
+    this.setState({
+      isFavorite:isFavorite,
+      favoriteIconName:isFavorite?'md-heart':'md-heart-outline'
+    })
+  }
+
+  toggleFavorite(isFavorite){
+    // this.setState({
+    //   isFavorite: isFavorite,
+    //   favoriteIconName: isFavorite?'md-heart':'md-heart-outline'
+    // })
+
+    this.setFavoriteState(!this.state.isFavorite)
+    //不明白
+    this.props.onFavorite(this.props.dataItem.item,!this.state.isFavorite)
+  }
+
   render() {
+    let popularItem = this.props.dataItem.item?this.props.dataItem.item:this.props.dataItem
     return (
       <TouchableOpacity
         onPress={this.props.onSelect}  
       >
         <View style={styles.cell}>
-          <Text style={styles.fullName}>{this.props.dataItem.full_name}</Text>
-          <Text style={styles.desc}>{this.props.dataItem.description}</Text>
+          {/* <Text>{JSON.stringify(popularItem)}</Text> */}
+          <Text style={styles.fullName}>{popularItem.full_name}</Text>
+          <Text style={styles.desc}>{popularItem.description}</Text>
           <View style={styles.info}>
             <View>
               <Image
                 style={{width: 24, height: 24}}
-                source={{uri: this.props.dataItem.owner.avatar_url}}
+                source={{uri: popularItem.owner.avatar_url}}
               />
               
             </View>
             <View style={styles.star}>
               <Ionicons name="md-star" size={24} color="rgb(36, 41, 46)"/>
-              <Text style={styles.star_txt}>{this.props.dataItem.stargazers_count}</Text>
+              <Text style={styles.star_txt}>{popularItem.stargazers_count}</Text>
             </View>
             
-            <Ionicons name="md-heart-outline" size={24} color="rgb(36, 41, 46)"/>
+            <TouchableOpacity onPress={()=>this.toggleFavorite()}>
+              <Ionicons name={this.state.favoriteIconName} size={24} color="#6570e2"/>
+            </TouchableOpacity>
 
-
-            
           </View>
           
         </View>

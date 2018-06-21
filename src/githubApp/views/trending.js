@@ -9,6 +9,10 @@ import TrendingCell from '../components/trendingCell'
 import LanguageUtil,{FLAG_LANGUAGE} from '../util/LanguageUtil'
 import ModalDropdown from 'react-native-modal-dropdown';
 
+import FavoriteUtil from '../util/FavoriteUtil'
+import ProjectModel from '../util/projectModel';
+import Utils from '../util/utils';
+
 const TRENDING_OPTIONS = ['Today', 'This week', 'This month'];
 const TimeSpanArray = ['since=daily','since=weekly','since=monthly']
 const API_URL = "https://github.com/trending/"
@@ -116,9 +120,11 @@ class TrendingTab extends Component{
   constructor(){
     super();
     this.DataRepository = new DataRepository(FLAG_STORAGE.flag_trending);
+    this.FavoriteUtil = new FavoriteUtil(FLAG_STORAGE.flag_popular)
     this.state = {
       result:'',
-      dataArr:[]
+      dataArr:[],
+      favoriteKeys:[]
     }
   }
   componentDidMount(){
@@ -129,8 +135,31 @@ class TrendingTab extends Component{
     if(nextProps.timeSpan!==this.props.timeSpan){
       this.onLoad(nextProps.timeSpan)
     }
-
   }
+
+  flushFavoriteState(){
+    let projectModelArr= [];
+    let items = this.items;
+    for(var i=0,len=items.length;i<len;i++){
+      projectModelArr.push(new ProjectModel(items[i],Utils.checkFavorite(items[i],this.state.favoriteKeys)))
+    }
+    this.setState({
+      dataArr:projectModelArr
+    })
+  }
+
+  getFavoriteKeys(){
+    this.FavoriteUtil.getFavoriteKeys().then((keys)=>{
+      if(keys){
+        this.setState({favoriteKeys:keys});
+      }
+      this.flushFavoriteState();
+    }).catch((error)=>{
+      this.flushFavoriteState();
+      console.log(error);
+    })
+  }
+
   
   getFetchUrl(timeSpan,category){
     return API_URL + category + '?' + timeSpan;
@@ -141,8 +170,9 @@ class TrendingTab extends Component{
     // let url = this.getFetchUrl('?since=daily',this.props.tabLabel); 
     let url = this.getFetchUrl(timeSpan,this.props.tabLabel); 
     this.DataRepository.fetchRepository(url).then(result => {
-      let items =result&&result.items?result.items:result?result:[];
-      this.setState({dataArr: items});
+      this.items =result&&result.items?result.items:result?result:[];
+      // this.setState({dataArr: items});
+      this.getFavoriteKeys();
       if(result&&result.update_date&&!this.DataRepository.checkData(result.update_date)){
         // Alert.alert('数据过期')
         return this.DataRepository.fetchNetRepository(url);
@@ -151,9 +181,11 @@ class TrendingTab extends Component{
       }
     }).then(items=>{
       if(!items || items.length===0)return;
-      this.setState({
-        dataArr: items
-      })
+      this.items = items;
+      this.getFavoriteKeys();
+      // this.setState({
+      //   dataArr: items
+      // })
       // Alert.alert('显示网络数据')
     })
     .catch(error=>{
@@ -164,8 +196,11 @@ class TrendingTab extends Component{
   onLoadByHand(timeSpan){
     let url = this.getFetchUrl(timeSpan,this.props.tabLabel);
     this.DataRepository.fetchNetRepository(url).then(result => {
-      this.setState({dataArr: result});
+      // this.setState({dataArr: result});
       // Alert.alert('手动刷新网络数据')
+      this.items = result;
+
+      this.getFavoriteKeys();
 
     }).catch(error=>{
       console.log(error)
@@ -178,6 +213,14 @@ class TrendingTab extends Component{
   onSelect(item){
     this.props.navigation.navigate('Detail',{itemVal: item})
   }
+  _onFavorite(item,isFavorite){
+    if(isFavorite){
+      this.FavoriteUtil.saveFavoriteItem(item.fullName.toString(),JSON.stringify(item))
+    }else{
+      this.FavoriteUtil.removeFavoriteItem(item.fullName.toString());
+    }
+
+  }
   render(){
     return(
       <FlatList
@@ -186,7 +229,8 @@ class TrendingTab extends Component{
         onRefresh={this._onRefresh}
         refreshing={false}
         renderItem={({item}) => <TrendingCell dataItem={item} 
-        onSelect={this.onSelect.bind(this,item)}
+        onSelect={this.onSelect.bind(this,item.item)}
+        onFavorite={(item,isFavorite)=>this._onFavorite(item,isFavorite)}
         // onSelect={(item)=>this.onSelect(item)}
       />
       }

@@ -9,7 +9,7 @@ class Favorite extends Component {
       <View style={styles.container}>
         <Text>this is Favorite</Text>
         <WebView
-        source={{uri: 'https://github.com/facebook/react-native'}}
+        source={{uri: 'https://www.qianpen.com/front/financing/money-plan/index'}}
         style={{marginTop: 20}}
       />
       </View>
