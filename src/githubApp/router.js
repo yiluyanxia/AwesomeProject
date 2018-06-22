@@ -212,17 +212,17 @@ export const GithubStack = createStackNavigator({
 )
 
 export const AppStack = createStackNavigator({
-  Splash: {
-    screen: Splash,
-  },
-  Wellcome: {
-    screen: Wellcome,
-  },
+  // Splash: {
+  //   screen: Splash,
+  // },
+  // Wellcome: {
+  //   screen: Wellcome,
+  // },
   GithubStack: {
     screen: GithubStack
   }
 }, {
-  initialRouteName: 'Splash',
+  // initialRouteName: 'Splash',
   mode: 'card',
   headerMode: 'none',
 })

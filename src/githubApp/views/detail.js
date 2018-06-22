@@ -10,24 +10,33 @@ class Detail extends Component {
 
   constructor(props){
     super(props);
-    let url = this.props.navigation.state.params.itemVal.html_url?this.props.navigation.state.params.itemVal.html_url: TRENDING_URL+this.props.navigation.state.params.itemVal.fullName;
-    // let title = this.props.navigation.state.params.item.full_name;
+    const navParams=this.props.navigation.state.params||{}
+    // let url = this.props.navigation.state.params.itemVal.html_url?this.props.navigation.state.params.itemVal.html_url: TRENDING_URL+this.props.navigation.state.params.itemVal.fullName;
+    let url = navParams.itemVal.item.html_url?navParams.itemVal.item.html_url: TRENDING_URL+navParams.itemVal.item.fullName;
+   
     this.state ={
       url: url,
-      // title: title,
-      canGoBack:false
+      canGoBack:false,
+      isFavorite:navParams.itemVal.isFavorite,
+      favoriteIconColor:'#fff'
+      // favoriteIconName:navParams.itemVal.isFavorite?'md-heart':'md-heart-outline'
     }
+
   }
 
   componentDidMount(){
     this.props.navigation.setParams({ goBackFun: this._goBackFun });
+    this.props.navigation.setParams({ toggleFavorite: this._toggleFavorite });
   }
 
   static navigationOptions = ({ navigation }) => {
     
     const params = navigation.state.params || {};
+    const favoriteIconName= params.itemVal.isFavorite?'md-heart':'md-heart-outline';
+    
+    
     return {
-      title: params.itemVal.full_name?params.itemVal.full_name:params.itemVal.fullName,
+      title: params.itemVal.item.full_name?params.itemVal.item.full_name:params.itemVal.item.fullName,
       headerLeft:(
         <TouchableOpacity style={{paddingLeft:20}} onPress={params.goBackFun}>
           <Ionicons name="md-arrow-back" size={24} color="#fff" />
@@ -35,14 +44,18 @@ class Detail extends Component {
     
       ),
       headerRight: (
-        <TouchableOpacity>
-          
+        <TouchableOpacity style={{paddingRight:20}} onPress={params.toggleFavorite}>
+          <Ionicons name={favoriteIconName} size={24} color="#fff" />
         </TouchableOpacity>
-      )
+      ),
+      headerStyle:{
+        backgroundColor: '#6570e2',
+        height:56,
+      }
     };
   };
 
- 
+  
   _goBackFun =()=>{
     if(this.state.canGoBack){
       this.refs[WEBVIEW_REF].goBack();
@@ -51,16 +64,24 @@ class Detail extends Component {
     }
   }
 
-  // _onNavigationStateChange(navState){
-  //   this.setState({
-  //     canGoBack:navState.canGoBack,
-  //     url:navState.url
-  //   })
-  // }
+  setFavoriteState(isFavorite){
+    this.props.navigation.state.params.itemVal.isFavorite = isFavorite
+  }
+
+  _toggleFavorite =()=>{
+    this.props.navigation.state.params.itemVal.isFavorite = !this.props.navigation.state.params.itemVal.isFavorite
+
+    // this.setFavoriteState(!this.state.isFavorite)
+
+    // this.props.onFavorite(this.props.dataItem.item,!this.state.isFavorite)
+  }
+
+ 
+  
   _onNavigationStateChange =(navState)=>{
     this.setState({
       canGoBack:navState.canGoBack,
-      url:navState.url
+      // url:navState.url
     })
   }
 

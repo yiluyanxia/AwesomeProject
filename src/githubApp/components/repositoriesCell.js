@@ -14,7 +14,7 @@ class repositoriesCell extends Component {
     this.setFavoriteState(nextProps.dataItem.isFavorite)
   }
   setFavoriteState(isFavorite){
-    this.props.dataItem.isFavorite =isFavorite
+    this.props.dataItem.isFavorite = isFavorite
     this.setState({
       isFavorite:isFavorite,
       favoriteIconName:isFavorite?'md-heart':'md-heart-outline'

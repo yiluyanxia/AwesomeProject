@@ -173,7 +173,7 @@ class PopularTab extends Component{
           onRefresh={this._onRefresh}
           refreshing={false}
           renderItem={({item}) => <RepositoriesCell dataItem={item} 
-          onSelect={this.onSelect.bind(this,item.item)}
+          onSelect={this.onSelect.bind(this,item)}
           onFavorite={(item,isFavorite)=>this._onFavorite(item,isFavorite)}
           // onFavorite={this._onFavorite.bind(this,item,isFavorite)}
           // onSelect={(item)=>this.onSelect(item)}
