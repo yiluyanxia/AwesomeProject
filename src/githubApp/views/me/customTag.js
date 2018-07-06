@@ -59,7 +59,7 @@ class CustomTag extends Component {
   
     const params = navigation.state.params || {};
     let _title = params.isRemove ? 'Remove Tag' : 'Custom Tag';
-    _title = params.flag===FLAG_LANGUAGE.flag_language?'Custom Language':'Custom Tag';
+    _title = params.flag===FLAG_LANGUAGE.flag_language?'Custom Language':_title;
     return {
       title: _title,
       headerLeft:(

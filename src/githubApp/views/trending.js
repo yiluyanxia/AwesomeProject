@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet,View, FlatList,Alert,Text,TouchableOpacity,TouchableHighlight } from 'react-native';
+import { StyleSheet,View, FlatList,Alert,Text,TouchableOpacity,TouchableHighlight,DeviceEventEmitter } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -16,6 +16,7 @@ import Utils from '../util/utils';
 const TRENDING_OPTIONS = ['Today', 'This week', 'This month'];
 const TimeSpanArray = ['since=daily','since=weekly','since=monthly']
 const API_URL = "https://github.com/trending/"
+
 class Trending extends Component {
   constructor(props){
     super(props);
@@ -72,7 +73,6 @@ class Trending extends Component {
   static navigationOptions = ({ navigation }) => {
   
     const params = navigation.state.params || {};
-    let _title = params.isRemove ? 'Remove Tag' : 'Custom Tag';
     return {
       headerTitle:(
         <View style={styles.dropdownView}>
@@ -120,7 +120,7 @@ class TrendingTab extends Component{
   constructor(){
     super();
     this.DataRepository = new DataRepository(FLAG_STORAGE.flag_trending);
-    this.FavoriteUtil = new FavoriteUtil(FLAG_STORAGE.flag_popular)
+    this.FavoriteUtil = new FavoriteUtil(FLAG_STORAGE.flag_trending)
     this.state = {
       result:'',
       dataArr:[],
@@ -129,11 +129,24 @@ class TrendingTab extends Component{
   }
   componentDidMount(){
     this.onLoad(this.props.timeSpan);
+    this.listener= DeviceEventEmitter.addListener('favoriteChange_trending',()=>{
+      this.isFavoriteChanged = true;
+    })
   }
 
   componentWillReceiveProps(nextProps){
     if(nextProps.timeSpan!==this.props.timeSpan){
       this.onLoad(nextProps.timeSpan)
+    }else if(this.isFavoriteChanged){
+      this.isFavoriteChanged = false
+      this.getFavoriteKeys();
+    }
+
+  }
+
+  componentWillUnmount(){
+    if(this.listener){
+      this.listener.remove();
     }
   }
 
@@ -211,7 +224,7 @@ class TrendingTab extends Component{
   }
  
   onSelect(item){
-    this.props.navigation.navigate('Detail',{itemVal: item})
+    this.props.navigation.navigate('Detail',{itemVal: item,flag:FLAG_STORAGE.flag_trending})
   }
   _onFavorite(item,isFavorite){
     if(isFavorite){
@@ -229,7 +242,7 @@ class TrendingTab extends Component{
         onRefresh={this._onRefresh}
         refreshing={false}
         renderItem={({item}) => <TrendingCell dataItem={item} 
-        onSelect={this.onSelect.bind(this,item.item)}
+        onSelect={this.onSelect.bind(this,item)}
         onFavorite={(item,isFavorite)=>this._onFavorite(item,isFavorite)}
         // onSelect={(item)=>this.onSelect(item)}
       />

@@ -20,10 +20,15 @@ import Popular from './views/popular'
 import Trending from './views/trending'
 import Favorite from './views/favorite'
 import Detail from './views/detail'
+import Search from './views/search'
 
 import Me from './views/me/me'
 import CustomTag from './views/me/customTag'
 import SortTag from './views/me/sortTag'
+
+import AboutApp from './views/about/aboutApp'
+import AboutAuthor from './views/about/aboutAuthor'
+import WebView from './views/about/webView'
 
 export const PopularStack = createStackNavigator({
   Popular: {
@@ -33,7 +38,7 @@ export const PopularStack = createStackNavigator({
   navigationOptions: ({
     navigation
   }) => ({
-    headerStyle: {
+    headerStyle:{
       backgroundColor: '#6570e2',
       borderBottomColor: 'transparent',
       borderWidth: 0,
@@ -80,7 +85,11 @@ export const FavoriteStack = createStackNavigator({
     navigation
   }) => ({
     headerStyle: {
-      backgroundColor: '#6570e2'
+      backgroundColor: '#6570e2',
+      borderBottomColor: 'transparent',
+      borderWidth: 0,
+      elevation: 0,
+      shadowOpacity: 0,
     },
     headerTintColor: '#fff',
     headerTitleStyle: {
@@ -97,7 +106,11 @@ export const MeStack = createStackNavigator({
 }, {
   navigationOptions: ({navigation}) => ({
     headerStyle: {
-      backgroundColor: '#6570e2'
+      backgroundColor: '#6570e2',
+      borderBottomColor: 'transparent',
+      borderWidth: 0,
+      elevation: 0,
+      shadowOpacity: 0,
     },
     headerTintColor: '#fff',
     headerTitleStyle: {
@@ -150,18 +163,6 @@ export const GithubTabs = createBottomTabNavigator({
   }
 })
 
-export const ExtraStack = createStackNavigator({
-  CustomTag: {
-    screen: CustomTag,
-  },
-  SortTag: {
-    screen: SortTag,
-  },
-  Detail:{
-    screen:Detail
-  }
-})
-
 export const GithubStack = createStackNavigator({
   GithubTabs: {
     screen: GithubTabs,
@@ -173,34 +174,30 @@ export const GithubStack = createStackNavigator({
     screen: SortTag,
   },
   Detail:{
-    screen:Detail
+    screen: Detail
+  },
+  AboutApp:{
+    screen: AboutApp
+  },
+  AboutAuthor:{
+    screen: AboutAuthor
+  },
+  WebView:{
+    screen: WebView
+  },
+  Search:{
+    screen: Search
   }
 },{
   navigationOptions:({navigation})=>({
-
-    //这里是一个对象
     headerStyle: {
       backgroundColor: '#6570e2',
+      borderBottomColor: 'transparent',
+      borderWidth: 0,
+      elevation: 0,
+      shadowOpacity: 0,
       height:0
     },
-
-    //这里返回一个对象 和 上面的是一样的吗  如果不一样怎么改
-    // headerStyle:()=>{
-    //   var hh = {backgroundColor: '#6570e2'}
-    //   return {hh};
-    // },
-
-    // headerStyle:()=>{
-    //   const {routeName} = navigation.state;
-    //   let heightVal = 0;
-    //   // if(routeName=== 'CustomTag'){
-    //   //   heightVal = 0
-    //   // }
-    //   var hh = {backgroundColor: '#6570e2'}
-    //   return hh;
-    //   // return <View style={{height:heightVal}}>111</View>
-    // },
-    
     headerTintColor: '#fff',
     headerTitleStyle: {
       flex: 1,

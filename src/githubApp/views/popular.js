@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet,View, FlatList,Alert,Text,ScrollView } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { StyleSheet,View, FlatList,Alert,Text,ScrollView,DeviceEventEmitter,TouchableOpacity } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import DataRepository,{FLAG_STORAGE} from '../network/DataRepository'
 import ScrollableTabView ,{ScrollableTabBar} from 'react-native-scrollable-tab-view'
 import RepositoriesCell from '../components/repositoriesCell'
@@ -13,11 +13,6 @@ const URL = "https://api.github.com/search/repositories?q="
 const QUERY_STR ="&sort=star"
 
 class Popular extends Component {
-
-  static navigationOptions = {
-    title: 'Popular',
-  };
-  
   constructor(props){
     super(props);
     this.LanguageUtil = new LanguageUtil(FLAG_LANGUAGE.flag_key);
@@ -25,6 +20,32 @@ class Popular extends Component {
       languages:[]
     }
   }
+  
+  componentDidMount(){
+    this._loadData();
+  }
+  componentWillReceiveProps(){
+    this._loadData();
+    
+  }
+  static navigationOptions = ({ navigation }) => {
+    const params = navigation.state.params || {};
+    return {
+      title: 'Popular',
+      headerLeft:(
+        <TouchableOpacity style={{paddingLeft:20}}>
+        </TouchableOpacity>
+      ),
+      headerRight: (
+        <TouchableOpacity style={{paddingRight:20}} onPress={()=>{navigation.navigate('Search')}}>
+          <Ionicons name="md-search" size={24} color="#fff" />
+        </TouchableOpacity>
+      ),
+    };
+  };
+
+  
+
   _loadData(){
     this.LanguageUtil.fetch().then((result) => {
       if(result){
@@ -36,14 +57,6 @@ class Popular extends Component {
       console.log(error);
     })
   }
-  componentDidMount(){
-    this._loadData();
-  }
-  componentWillReceiveProps(){
-    this._loadData();
-    
-  }
-
   
   render() {
     let content = this.state.languages.length>0?
@@ -73,6 +86,7 @@ class PopularTab extends Component{
     super();
     this.DataRepository = new DataRepository(FLAG_STORAGE.flag_popular);
     this.FavoriteUtil = new FavoriteUtil(FLAG_STORAGE.flag_popular)
+    this.isFavoriteChanged=false;
     this.state = {
       result:'',
       dataArr:[],
@@ -81,6 +95,22 @@ class PopularTab extends Component{
   }
   componentDidMount(){
     this.onLoad();
+    this.listener= DeviceEventEmitter.addListener('favoriteChange_popular',()=>{
+      this.isFavoriteChanged = true;
+    })
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(this.isFavoriteChanged){
+      this.isFavoriteChanged = false
+      this.getFavoriteKeys();
+    }
+
+  }
+  componentWillUnmount(){
+    if(this.listener){
+      this.listener.remove();
+    }
   }
 
   flushFavoriteState(){
@@ -111,11 +141,8 @@ class PopularTab extends Component{
     let url = URL+this.props.tabLabel+QUERY_STR; 
     this.DataRepository.fetchRepository(url).then(result => {
       this.items =result&&result.items?result.items:result?result:[];
-      // this.setState({dataArr: items});
-      // this.flushFavoriteState();
       this.getFavoriteKeys();
-
-      if(result&&result.update_date&&!this.DataRepository.checkData(result.update_date)){
+      if(result&&result.update_date&&!Utils.checkData(result.update_date)){
         // Alert.alert('数据过期')
         return this.DataRepository.fetchNetRepository(url);
       }else{
@@ -123,11 +150,8 @@ class PopularTab extends Component{
       }
     }).then(items=>{
       if(!items || items.length===0)return;
-      // this.setState({dataArr: items})
       this.items = items;
-      // this.flushFavoriteState();
       this.getFavoriteKeys();
-
       // Alert.alert('显示网络数据')
     })
     .catch(error=>{
@@ -139,10 +163,8 @@ class PopularTab extends Component{
     let url = URL+this.props.tabLabel+QUERY_STR; 
     this.DataRepository.fetchNetRepository(url).then(result => {
       this.items = result;
-      // this.flushFavoriteState();
+    
       this.getFavoriteKeys();
-
-      // this.setState({dataArr: result});
       // Alert.alert('手动刷新网络数据')
 
     }).catch(error=>{
@@ -154,7 +176,7 @@ class PopularTab extends Component{
   }
  
   onSelect(item){
-    this.props.navigation.navigate('Detail',{itemVal: item})
+    this.props.navigation.navigate('Detail',{itemVal: item, flag:FLAG_STORAGE.flag_popular})
   }
   _onFavorite(item,isFavorite){
     if(isFavorite){
@@ -162,8 +184,8 @@ class PopularTab extends Component{
     }else{
       this.FavoriteUtil.removeFavoriteItem(item.id.toString());
     }
-
   }
+  
   render(){
     return(
       <View>
@@ -175,8 +197,6 @@ class PopularTab extends Component{
           renderItem={({item}) => <RepositoriesCell dataItem={item} 
           onSelect={this.onSelect.bind(this,item)}
           onFavorite={(item,isFavorite)=>this._onFavorite(item,isFavorite)}
-          // onFavorite={this._onFavorite.bind(this,item,isFavorite)}
-          // onSelect={(item)=>this.onSelect(item)}
         />
         }
         />  
