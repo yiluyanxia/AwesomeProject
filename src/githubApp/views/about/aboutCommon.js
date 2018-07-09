@@ -8,6 +8,7 @@ import FavoriteUtil from '../../util/FavoriteUtil'
 import {FLAG_STORAGE} from '../../network/DataRepository'
 import ProjectModel from '../../util/projectModel'
 import Utils from '../../util/utils'
+import ActionUtils from '../../util/ActionUtils'
 import RepositoryUtils from '../../network/RepositoryUtils'
 export const FLAG_ABOUT={flag_about:'flag_about',flag_about_me:'about_me'};
 
@@ -71,14 +72,14 @@ class AboutCommon extends Component {
   onSelect(item){
     this.props.navigation.navigate('Detail',{itemVal: item, flag:FLAG_STORAGE.flag_popular})
   }
-  _onFavorite(item,isFavorite){
-    if(isFavorite){
-      this.FavoriteUtil.saveFavoriteItem(item.id.toString(),JSON.stringify(item))
-    }else{
-      this.FavoriteUtil.removeFavoriteItem(item.id.toString());
-    }
+  // _onFavorite(item,isFavorite){
+  //   if(isFavorite){
+  //     this.FavoriteUtil.saveFavoriteItem(item.id.toString(),JSON.stringify(item))
+  //   }else{
+  //     this.FavoriteUtil.removeFavoriteItem(item.id.toString());
+  //   }
 
-  }
+  // }
 
 
   renderRepository(projectModels){
@@ -89,7 +90,7 @@ class AboutCommon extends Component {
       views.push(
         <RepositoriesCell dataItem={item} 
           onSelect={this.onSelect.bind(this,item)}
-          onFavorite={(item,isFavorite)=>this._onFavorite(item,isFavorite)}/>
+          onFavorite={(item,isFavorite)=>ActionUtils.onFavorite(this.FavoriteUtil,item,isFavorite)}/>
       )
     }
   }

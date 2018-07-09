@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet,View, FlatList,Alert,Text,ScrollView,DeviceEventEmitter } from 'react-native';
+import { StyleSheet,View, FlatList,Alert,Text,ScrollView,DeviceEventEmitter,TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DataRepository,{FLAG_STORAGE} from '../network/DataRepository'
 import ScrollableTabView ,{ScrollableTabBar} from 'react-native-scrollable-tab-view'
 import RepositoriesCell from '../components/repositoriesCell'
 import TrendingCell from '../components/trendingCell'
+import MoreMenu,{MORE_MENU} from '../components/moreMenu'
 
 import FavoriteUtil from '../util/FavoriteUtil'
 import ProjectModel from '../util/projectModel';
@@ -13,11 +14,10 @@ import ArrayUtil from '../util/ArrayUtil'
 
 const URL = "https://api.github.com/search/repositories?q="
 const QUERY_STR ="&sort=star"
-
+const FAVORITE_MOREMENU_OPTIONS = [
+  MORE_MENU.Custom_Theme, MORE_MENU.About_Author, MORE_MENU.About 
+]
 class Favorite extends Component {
-  static navigationOptions = {
-    title: 'Favorite',
-  };
 
   constructor(props){
     super(props);
@@ -25,7 +25,24 @@ class Favorite extends Component {
      
     }
   }
- 
+  static navigationOptions = ({ navigation }) => {
+    const params = navigation.state.params || {};
+    return {
+      title: 'Favorite',
+      headerLeft:(
+        <TouchableOpacity style={{paddingLeft:20}}>
+        </TouchableOpacity>
+      ),
+      headerRight: (
+        <View>
+          <MoreMenu
+            options={FAVORITE_MOREMENU_OPTIONS}
+            onNavigation={(item,itemParams)=>{navigation.navigate(item,itemParams)}} />
+        </View>
+      ),
+    };
+  };
+
   componentDidMount(){
    
   }
@@ -103,10 +120,7 @@ class FavoriteTab extends Component{
         DeviceEventEmitter.emit('favoriteChange_trending')
 
       }
-     
-
     }
-
   }
 
   render(){

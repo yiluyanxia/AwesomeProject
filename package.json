@@ -7,8 +7,9 @@
     "test": "jest"
   },
   "dependencies": {
+    "@babel/core": "^7.0.0-beta.52",
     "GitHubTrending": "^3.0.0",
-    "react": "16.3.1",
+    "react": "16.4.1",
     "react-native": "0.55.4",
     "react-native-check-box": "^2.1.0",
     "react-native-htmlview": "^0.12.1",

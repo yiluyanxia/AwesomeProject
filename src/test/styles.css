@@ -10,6 +10,7 @@
 .box{
   width: 20px;
   height: 20px;
+  opacity: 0.9;
 }
 .box::before{
   width: 10px;
@@ -18,5 +19,7 @@
 .box::after{
   width: 20px;
   height: 20px;
-  background: transparent
+  background: transparent;
+  color: lightblue,
+  
 }

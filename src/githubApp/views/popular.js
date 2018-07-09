@@ -3,14 +3,20 @@ import { StyleSheet,View, FlatList,Alert,Text,ScrollView,DeviceEventEmitter,Touc
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import DataRepository,{FLAG_STORAGE} from '../network/DataRepository'
 import ScrollableTabView ,{ScrollableTabBar} from 'react-native-scrollable-tab-view'
+import ModalDropdown from 'react-native-modal-dropdown'
+import MoreMenu,{MORE_MENU} from '../components/moreMenu'
 import RepositoriesCell from '../components/repositoriesCell'
 import LanguageUtil,{FLAG_LANGUAGE} from '../util/LanguageUtil'
 import FavoriteUtil from '../util/FavoriteUtil'
 import ProjectModel from '../util/projectModel';
 import Utils from '../util/utils';
-
+import ActionUtils from '../util/ActionUtils'
 const URL = "https://api.github.com/search/repositories?q="
 const QUERY_STR ="&sort=star"
+const POPULAR_MOREMENU_OPTIONS = [
+  MORE_MENU.Custom_Key, MORE_MENU.Sort_Key, MORE_MENU.Remove_Key, MORE_MENU.Custom_Theme, MORE_MENU.About_Author, MORE_MENU.About 
+]
+
 
 class Popular extends Component {
   constructor(props){
@@ -20,14 +26,33 @@ class Popular extends Component {
       languages:[]
     }
   }
-  
+
+  componentWillMount() {
+    this.props.navigation.setParams({ onSelect: this._onSelect });
+  }
+
   componentDidMount(){
     this._loadData();
+    this.listenerPopular= DeviceEventEmitter.addListener('savaKey_search',()=>{
+      this._loadData();
+    })
   }
-  componentWillReceiveProps(){
-    this._loadData();
+
+  componentWillUnmount(){
+    if(this.listenerPopular){
+      this.listenerPopular.remove();
+    }
     
   }
+
+  componentWillReceiveProps(nextProps){
+    this._loadData();
+  }
+
+  _onSelect=(idx, value)=>{
+    Alert.alert(idx + value)
+  }
+  // this.props.navigation.navigate('Detail',{itemVal: item, flag:FLAG_STORAGE.flag_popular})
   static navigationOptions = ({ navigation }) => {
     const params = navigation.state.params || {};
     return {
@@ -37,9 +62,31 @@ class Popular extends Component {
         </TouchableOpacity>
       ),
       headerRight: (
-        <TouchableOpacity style={{paddingRight:20}} onPress={()=>{navigation.navigate('Search')}}>
-          <Ionicons name="md-search" size={24} color="#fff" />
-        </TouchableOpacity>
+        <View style={styles.headerRight_cont}>
+          <TouchableOpacity style={{paddingRight:20}} onPress={()=>{navigation.navigate('Search')}}>
+            <Ionicons name="md-search" size={24} color="#fff" />
+          </TouchableOpacity>
+          <MoreMenu
+            options={POPULAR_MOREMENU_OPTIONS}
+            onNavigation={(item,itemParams)=>{navigation.navigate(item,itemParams)}} />
+
+            {/* onFavorite={(item,isFavorite)=>ActionUtils.onFavorite(this.FavoriteUtil,item,isFavorite)} */}
+          {/* <ModalDropdown 
+            style={styles.dropdown}
+            textStyle={styles.dropdown_text}
+            dropdownStyle={styles.dropdown_list}
+            dropdownTextStyle={styles.dropdown_option}
+            dropdownTextHighlightStyle={styles.dropdown_highligh}
+            options={TRENDING_OPTIONS}
+            onSelect={this.onSelect}
+            renderButtonText={(rowData) => params.renderButtonText(rowData)}>
+            <Ionicons style={{paddingRight:20,paddingLeft:10}} name="md-more" size={24} color="#fff" />
+          </ModalDropdown> */}
+          
+          {/* <TouchableOpacity style={{paddingRight:20,paddingLeft:10}} onPress={()=>{navigation.navigate('Search')}}>
+            <Ionicons name="md-more" size={24} color="#fff" />
+          </TouchableOpacity> */}
+        </View>
       ),
     };
   };
@@ -105,8 +152,8 @@ class PopularTab extends Component{
       this.isFavoriteChanged = false
       this.getFavoriteKeys();
     }
-
   }
+
   componentWillUnmount(){
     if(this.listener){
       this.listener.remove();
@@ -178,13 +225,6 @@ class PopularTab extends Component{
   onSelect(item){
     this.props.navigation.navigate('Detail',{itemVal: item, flag:FLAG_STORAGE.flag_popular})
   }
-  _onFavorite(item,isFavorite){
-    if(isFavorite){
-      this.FavoriteUtil.saveFavoriteItem(item.id.toString(),JSON.stringify(item))
-    }else{
-      this.FavoriteUtil.removeFavoriteItem(item.id.toString());
-    }
-  }
   
   render(){
     return(
@@ -196,7 +236,7 @@ class PopularTab extends Component{
           refreshing={false}
           renderItem={({item}) => <RepositoriesCell dataItem={item} 
           onSelect={this.onSelect.bind(this,item)}
-          onFavorite={(item,isFavorite)=>this._onFavorite(item,isFavorite)}
+          onFavorite={(item,isFavorite)=>ActionUtils.onFavorite(this.FavoriteUtil,item,isFavorite)}
         />
         }
         />  
@@ -212,5 +252,10 @@ const styles = StyleSheet.create({
   container: {
    flex: 1,
    backgroundColor: "#efefef",
+  },
+  headerRight_cont:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    
   }
 })

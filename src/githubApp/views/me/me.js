@@ -44,6 +44,7 @@ class Me extends Component {
       case MORE_MENU.Custom_Theme:
         break;
       case MORE_MENU.About:
+        TargetComponent = 'AboutApp';
         break;
       case MORE_MENU.About_Author:
         TargetComponent = 'AboutAuthor';

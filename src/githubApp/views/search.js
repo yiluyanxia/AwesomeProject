@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet,View, FlatList,Alert,Text,ScrollView,DeviceEventEmitter,TextInput,TouchableOpacity } from 'react-native';
+import { StyleSheet,View, FlatList,Alert,Text,ScrollView,DeviceEventEmitter,TextInput,TouchableOpacity,ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import DataRepository,{FLAG_STORAGE} from '../network/DataRepository'
@@ -10,7 +10,11 @@ import TrendingCell from '../components/trendingCell'
 import FavoriteUtil from '../util/FavoriteUtil'
 import ProjectModel from '../util/projectModel';
 import Utils from '../util/utils';
+import ActionUtils from '../util/ActionUtils'
 import ArrayUtil from '../util/ArrayUtil'
+import GlobalStyles from '../assets/styles/GlobalStyles'
+import LanguageUtil,{FLAG_LANGUAGE} from '../util/LanguageUtil'
+import Cancelable from '../util/cancelable'
 
 const API_URL = 'https://api.github.com/search/repositories?q='
 const QUERY_STR = '&sort=stars'
@@ -21,23 +25,29 @@ class Search extends Component {
     this.DataRepository = new DataRepository(FLAG_STORAGE.flag_popular);
     this.FavoriteUtil = new FavoriteUtil(FLAG_STORAGE.flag_popular)
     this.isFavoriteChanged=false;
+    this.LanguageUtil = new LanguageUtil(FLAG_LANGUAGE.flag_key);
+    // this.keys=[];
     this.state={
       text: '',
       searchVal:'',
       rightIconName:'md-search',
       dataArr:[],
-      favoriteKeys:[]
+      favoriteKeys:[],
+      isRefreshing: false,
+      isAnimating:false,
+      showBottomBtn: false,
+      keys:[]
     }
   }
  
   componentDidMount(){
-   
+    this.initKeys();
   }
 
   componentWillReceiveProps(){
    
   }
-
+  
   componentWillMount() {
     // this.props.navigation.setParams({ renderHeaderTitle: ()=> this._renderHeaderTitle() });
     // this.props.navigation.setParams({ goBackFun: this._goBackFun });
@@ -56,10 +66,6 @@ class Search extends Component {
   //     </View>
   //   )
   // }
-
-  _goBackFun=()=>{
-    this.props.navigation.goBack();
-  }
 
   // static navigationOptions = ({ navigation }) => {
   //   const params = navigation.state.params || {};
@@ -86,6 +92,50 @@ class Search extends Component {
   //     }
   //   };
   // };
+
+  async initKeys(){
+    // this.keys =  await this.LanguageUtil.fetch();
+    await this.LanguageUtil.fetch().then((result) => {
+      if(result){
+        this.setState({
+          keys:result
+        })
+      }
+    }).catch(error => {
+      console.log(error);
+    })
+  }
+
+  saveKey(){
+    let key = this.state.searchVal;
+    if(this.checkKeyIsExist(this.state.keys,key)){
+      Alert.alert(key+'已经存在')
+    } else {
+      key={
+        "path": key,
+        "name": key,
+        "checked": true
+      };
+      this.state.keys.unshift(key);
+      this.LanguageUtil.save(this.state.keys);
+      DeviceEventEmitter.emit('savaKey_search')
+      Alert.alert(key.name+'保存成功')      
+    }
+
+  }
+
+
+  checkKeyIsExist(keys,key){
+    for(let i = 0, l = keys.length; i<l;i++){
+      if(key.toLowerCase()=== keys[i].name.toLowerCase()) return true;
+    }
+    return false;
+  }
+
+  _goBackFun=()=>{
+    this.props.navigation.goBack();
+  }
+
   goSearch=()=>{ 
     if(this.state.rightIconName==='md-search'){
       this.setState({
@@ -96,6 +146,7 @@ class Search extends Component {
       this.setState({
         rightIconName: 'md-search'
       })
+      this.cancelable.cancel();
     }
   }
 
@@ -123,20 +174,39 @@ class Search extends Component {
     })
   }
   loadData(){
-    fetch(this.getFetchUrl(this.state.searchVal)).then(response=>response.json()).then(responseData =>{
+    this.setState({
+      isRefreshing: true,
+      isAnimating:true
+    })
+    this.cancelable = Cancelable(fetch(this.getFetchUrl(this.state.searchVal)));
+    // fetch(this.getFetchUrl(this.state.searchVal))
+    this.cancelable.promise.then(response=>response.json()).then(responseData =>{
       if(!this||!responseData||!responseData.items||responseData.items.length ===0 ){
         Alert.alert('什么都没有找到')
         this.setState({
-          rightIconName:'md-search'
+          rightIconName:'md-search',
+          isAnimating: false
         })
         return;
       }
-      Alert.alert('url is' + this.getFetchUrl(this.state.searchVal))
+      // Alert.alert('url is' + this.getFetchUrl(this.state.searchVal))
       this.items = responseData.items;
       this.getFavoriteKeys();
+
+      if(!this.checkKeyIsExist(this.state.keys,this.state.searchVal)){
+        this.setState({
+          showBottomBtn: true,  
+        })
+      }
+
+      this.setState({
+        rightIconName:'md-search',
+        isRefreshing: false
+      })
     }).catch(e=>{
       this.setState({
-        rightIconName:'md-search'
+        rightIconName:'md-search',
+        isRefreshing: false
       })
     })
   }
@@ -146,13 +216,6 @@ class Search extends Component {
   }
   onSelect(item){
     this.props.navigation.navigate('Detail',{itemVal: item, flag:FLAG_STORAGE.flag_popular})
-  }
-  _onFavorite(item,isFavorite){
-    if(isFavorite){
-      this.FavoriteUtil.saveFavoriteItem(item.id.toString(),JSON.stringify(item))
-    }else{
-      this.FavoriteUtil.removeFavoriteItem(item.id.toString());
-    }
   }
 
   onLoadByHand(){
@@ -171,6 +234,7 @@ class Search extends Component {
   _onRefresh = () =>{
     this.onLoadByHand()
   }
+
   render() {
     
     return (
@@ -192,17 +256,30 @@ class Search extends Component {
           </TouchableOpacity>
         </View>
         <View style={styles.listBox}>
+          {
+            this.state.isRefreshing ?
+          <View style={styles.indicatorBox}><ActivityIndicator animating={this.state.isAnimating} size="large" color="#6570e2" /></View>
+          :
           <FlatList
             data={this.state.dataArr}
             keyExtractor = {(item, index) => item.id}
             onRefresh={this._onRefresh}
-            refreshing={false}
+            refreshing={this.state.isRefreshing}
             renderItem={({item}) => <RepositoriesCell dataItem={item} 
             onSelect={this.onSelect.bind(this,item)}
-            onFavorite={(item,isFavorite)=>this._onFavorite(item,isFavorite)}/>
-            }
-          />  
+            onFavorite={(item,isFavorite)=>ActionUtils.onFavorite(this.FavoriteUtil,item,isFavorite)}/>
+            }/>  
+          }
 
+          {/* <Text>this.keys is:</Text>
+          <Text>{JSON.stringify(this.state.keys)}</Text> */}
+
+          {this.state.showBottomBtn?
+            <TouchableOpacity style={styles.bottomBtn} onPress={()=>this.saveKey()}>
+              <Text style={styles.bottomBtn_txt}>添加标签</Text>
+            </TouchableOpacity>
+            :null}
+        
         </View>
       </View>
     );
@@ -243,5 +320,29 @@ const styles = StyleSheet.create({
   },
   headerRight: {
     width: 40
+  },
+  listBox:{
+    flex: 1,
+  },
+  indicatorBox: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  bottomBtn:{
+    alignItems: 'center',
+    justifyContent: 'center',
+    opacity: 0.9,
+    height: 40,
+    position: 'absolute',
+    left: 10,
+    right: 10,
+    bottom: 10,
+    borderRadius: 3,
+    backgroundColor: '#6570e2'
+  },
+  bottomBtn_txt:{
+    fontSize: 18,
+    color: '#fff',
+    fontWeight: '500',
   }
 })

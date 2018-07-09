@@ -1,6 +1,5 @@
-// module.exports ={
-  
-// }
+import { Dimensions } from 'react-native'
+const {height, width} = Dimensions.get('window')
 const GlobalStyles = {
   line:{
     borderBottomColor: 'red',
@@ -26,6 +25,8 @@ const GlobalStyles = {
   },
   itemtxt: {
     fontSize: 18,
-  }
+  },
+  window_height: height,
+  window_width: width,
 }
 export default GlobalStyles;

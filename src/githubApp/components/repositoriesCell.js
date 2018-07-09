@@ -30,6 +30,8 @@ class repositoriesCell extends Component {
     this.setFavoriteState(!this.state.isFavorite)
     //不明白
     this.props.onFavorite(this.props.dataItem.item,!this.state.isFavorite)
+
+    // onFavorite={(item,isFavorite)=>ActionUtils.onFavorite(this.FavoriteUtil,item,isFavorite)}
   }
 
   render() {

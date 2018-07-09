@@ -5,6 +5,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import DataRepository,{FLAG_STORAGE} from '../network/DataRepository'
 import ScrollableTabView ,{ScrollableTabBar} from 'react-native-scrollable-tab-view'
+import MoreMenu,{MORE_MENU} from '../components/moreMenu'
 import TrendingCell from '../components/trendingCell'
 import LanguageUtil,{FLAG_LANGUAGE} from '../util/LanguageUtil'
 import ModalDropdown from 'react-native-modal-dropdown';
@@ -12,10 +13,15 @@ import ModalDropdown from 'react-native-modal-dropdown';
 import FavoriteUtil from '../util/FavoriteUtil'
 import ProjectModel from '../util/projectModel';
 import Utils from '../util/utils';
+import ActionUtils from '../util/ActionUtils'
 
 const TRENDING_OPTIONS = ['Today', 'This week', 'This month'];
 const TimeSpanArray = ['since=daily','since=weekly','since=monthly']
 const API_URL = "https://github.com/trending/"
+
+const TRENDING_MOREMENU_OPTIONS = [
+  MORE_MENU.Custom_Language, MORE_MENU.Sort_Language, MORE_MENU.Custom_Theme, MORE_MENU.About_Author, MORE_MENU.About 
+]
 
 class Trending extends Component {
   constructor(props){
@@ -74,6 +80,10 @@ class Trending extends Component {
   
     const params = navigation.state.params || {};
     return {
+      headerLeft:(
+        <TouchableOpacity style={{paddingLeft:20}}>
+        </TouchableOpacity>
+      ),
       headerTitle:(
         <View style={styles.dropdownView}>
           <ModalDropdown 
@@ -87,6 +97,13 @@ class Trending extends Component {
             onSelect={params.onSelect}
           >
           </ModalDropdown>
+        </View>
+      ),
+      headerRight: (
+        <View>
+          <MoreMenu
+            options={TRENDING_MOREMENU_OPTIONS}
+            onNavigation={(item,itemParams)=>{navigation.navigate(item,itemParams)}} />
         </View>
       ),
       
@@ -131,13 +148,16 @@ class TrendingTab extends Component{
     this.onLoad(this.props.timeSpan);
     this.listener= DeviceEventEmitter.addListener('favoriteChange_trending',()=>{
       this.isFavoriteChanged = true;
+      this.getFavoriteKeys();
+      Alert.alert('favoriteChange_trending')
     })
   }
 
   componentWillReceiveProps(nextProps){
     if(nextProps.timeSpan!==this.props.timeSpan){
       this.onLoad(nextProps.timeSpan)
-    }else if(this.isFavoriteChanged){
+    }
+    else if(this.isFavoriteChanged){
       this.isFavoriteChanged = false
       this.getFavoriteKeys();
     }
@@ -226,14 +246,7 @@ class TrendingTab extends Component{
   onSelect(item){
     this.props.navigation.navigate('Detail',{itemVal: item,flag:FLAG_STORAGE.flag_trending})
   }
-  _onFavorite(item,isFavorite){
-    if(isFavorite){
-      this.FavoriteUtil.saveFavoriteItem(item.fullName.toString(),JSON.stringify(item))
-    }else{
-      this.FavoriteUtil.removeFavoriteItem(item.fullName.toString());
-    }
 
-  }
   render(){
     return(
       <FlatList
@@ -243,8 +256,7 @@ class TrendingTab extends Component{
         refreshing={false}
         renderItem={({item}) => <TrendingCell dataItem={item} 
         onSelect={this.onSelect.bind(this,item)}
-        onFavorite={(item,isFavorite)=>this._onFavorite(item,isFavorite)}
-        // onSelect={(item)=>this.onSelect(item)}
+        onFavorite={(item,isFavorite)=>ActionUtils.onFavorite(this.FavoriteUtil,item,isFavorite,FLAG_STORAGE.flag_trending)}
       />
       }
       />     
