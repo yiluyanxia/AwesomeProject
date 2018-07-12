@@ -12,19 +12,23 @@ import ProjectModel from '../util/projectModel';
 import Utils from '../util/utils';
 import ArrayUtil from '../util/ArrayUtil'
 
+import BaseComponent from '../components/baseComponent'
+
 const URL = "https://api.github.com/search/repositories?q="
 const QUERY_STR ="&sort=star"
 const FAVORITE_MOREMENU_OPTIONS = [
   MORE_MENU.Custom_Theme, MORE_MENU.About_Author, MORE_MENU.About 
 ]
-class Favorite extends Component {
+
+class Favorite extends BaseComponent {
 
   constructor(props){
     super(props);
     this.state={
-     
+      theme: {}
     }
   }
+
   static navigationOptions = ({ navigation }) => {
     const params = navigation.state.params || {};
     return {
@@ -43,24 +47,34 @@ class Favorite extends Component {
     };
   };
 
-  componentDidMount(){
-   
-  }
-
-  componentWillReceiveProps(){
-   
-  }
+  
   render() {
+    // let content = <ScrollableTabView
+    //   tabBarBackgroundColor={this.state.theme.themeColor}
+    //   tabBarInactiveTextColor="#fff"
+    //   tabBarActiveTextColor="#fefefe"
+    //   tabBarUnderlineStyle={{backgroundColor:'#fff'}}
+    //   renderTabBar={()=><ScrollableTabBar/>} >
+
+    //   <FavoriteTab  tabLabel='Popular' flag={FlAG_STORAGE.flag_popular}/>
+    //   <FavoriteTab  tabLabel='Trending' flag={FlAG_STORAGE.flag_trending}/>
+
+    // </ScrollableTabView>;
     
+  
     return (
       <View style={styles.container}>
+        {/* <Text>{JSON.stringify(this.state.theme)}</Text> */}
+        {/* <Text>{JSON.stringify(this.state.theme.themeColor)}</Text> */}
+        {/* {content} */}
         <ScrollableTabView
-          tabBarBackgroundColor="#6570e2"
+          // tabBarBackgroundColor="#6570e2"
+          tabBarBackgroundColor={this.state.theme.themeColor}
           tabBarActiveTextColor="#fff"
           tabBarInactiveTextColor="#fefefe"
           tabBarUnderlineStyle={{backgroundColor:"#fff"}}>
-          <FavoriteTab tabLabel='Popular' flag={FLAG_STORAGE.flag_popular} {...this.props}></FavoriteTab>
-          <FavoriteTab tabLabel='Trending' flag={FLAG_STORAGE.flag_trending} {...this.props}></FavoriteTab>
+            <FavoriteTab tabLabel='Popular' flag={FLAG_STORAGE.flag_popular} {...this.props}></FavoriteTab>
+            <FavoriteTab tabLabel='Trending' flag={FLAG_STORAGE.flag_trending} {...this.props}></FavoriteTab>
         </ScrollableTabView>
       </View>
     );

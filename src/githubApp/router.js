@@ -1,15 +1,12 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   createStackNavigator,
-  createBottomTabNavigator
+  createBottomTabNavigator,
+  createSwitchNavigator
 } from 'react-navigation';
 import {
-  StyleSheet,
-  View,
-  FlatList,
   Alert,
-  Text,
-  TouchableOpacity
+  DeviceEventEmitter
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -32,26 +29,30 @@ import WebView from './views/about/webView'
 
 export const PopularStack = createStackNavigator({
   Popular: {
-    screen: Popular,
+    screen: Popular
   }
-}, {
+},
+{
   navigationOptions: ({
-    navigation
-  }) => ({
-    headerStyle:{
-      backgroundColor: '#6570e2',
-      borderBottomColor: 'transparent',
-      borderWidth: 0,
-      elevation: 0,
-      shadowOpacity: 0,
-    },
-    headerTintColor: '#fff',
-    headerTitleStyle: {
-      flex: 1,
-      textAlign: 'center'
+    navigation, screenProps
+  }) => {
+    return{
+      headerStyle:{
+        backgroundColor: screenProps.themeColor,
+        borderBottomColor: 'transparent',
+        borderWidth: 0,
+        elevation: 0,
+        shadowOpacity: 0,
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        flex: 1,
+        textAlign: 'center'
+      }
     }
-  })
-})
+  }
+},
+)
 
 export const TrendingStack = createStackNavigator({
   Trending: {
@@ -59,10 +60,10 @@ export const TrendingStack = createStackNavigator({
   },
 }, {
   navigationOptions: ({
-    navigation
+    navigation, screenProps
   }) => ({
     headerStyle: {
-      backgroundColor: '#6570e2',
+      backgroundColor: screenProps.themeColor,
       borderBottomColor: 'transparent',
       borderWidth: 0,
       elevation: 0,
@@ -82,10 +83,10 @@ export const FavoriteStack = createStackNavigator({
   },
 }, {
   navigationOptions: ({
-    navigation
+    navigation,screenProps
   }) => ({
     headerStyle: {
-      backgroundColor: '#6570e2',
+      backgroundColor: screenProps.themeColor,
       borderBottomColor: 'transparent',
       borderWidth: 0,
       elevation: 0,
@@ -94,7 +95,7 @@ export const FavoriteStack = createStackNavigator({
     headerTintColor: '#fff',
     headerTitleStyle: {
       flex: 1,
-      textAlign: 'center'
+      textAlign: 'center',
     }
   })
 })
@@ -104,9 +105,9 @@ export const MeStack = createStackNavigator({
     screen: Me,
   },
 }, {
-  navigationOptions: ({navigation}) => ({
+  navigationOptions: ({navigation,screenProps}) => ({
     headerStyle: {
-      backgroundColor: '#6570e2',
+      backgroundColor: screenProps.themeColor,
       borderBottomColor: 'transparent',
       borderWidth: 0,
       elevation: 0,
@@ -134,7 +135,7 @@ export const GithubTabs = createBottomTabNavigator({
     screen: MeStack
   }
 }, {
-    navigationOptions: ({ navigation}) => ({
+    navigationOptions: ({ navigation,screenProps}) => ({
     tabBarIcon: ({ focused, tintColor}) => {
       const {routeName} = navigation.state;
       let iconName;
@@ -150,17 +151,17 @@ export const GithubTabs = createBottomTabNavigator({
       return <Ionicons name = {iconName} size = {25} color = {tintColor} />
 
     },
-  }),
-  tabBarOptions: {
-    activeTintColor: '#6570e2',
-    inactiveTintColor: '#455A64',
-    labelStyle: {
-      fontSize: 13,
-    },
-    style: {
-      backgroundColor: '#fff',
+    tabBarOptions: {
+      activeTintColor: screenProps.themeColor,
+      inactiveTintColor: '#455A64',
+      labelStyle: {
+        fontSize: 13,
+      },
+      style: {
+        backgroundColor: '#fff',
+      }
     }
-  }
+  }),
 })
 
 export const GithubStack = createStackNavigator({
@@ -189,9 +190,9 @@ export const GithubStack = createStackNavigator({
     screen: Search
   }
 },{
-  navigationOptions:({navigation})=>({
+  navigationOptions:({navigation,screenProps})=>({
     headerStyle: {
-      backgroundColor: '#6570e2',
+      backgroundColor: screenProps.themeColor,
       borderBottomColor: 'transparent',
       borderWidth: 0,
       elevation: 0,
@@ -208,13 +209,14 @@ export const GithubStack = createStackNavigator({
 }
 )
 
-export const AppStack = createStackNavigator({
-  // Splash: {
-  //   screen: Splash,
-  // },
-  // Wellcome: {
-  //   screen: Wellcome,
-  // },
+
+export const AppStack = createSwitchNavigator({
+  Splash: {
+    screen: Splash,
+  },
+  Wellcome: {
+    screen: Wellcome,
+  },
   GithubStack: {
     screen: GithubStack
   }

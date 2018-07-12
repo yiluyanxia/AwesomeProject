@@ -15,6 +15,8 @@ import ProjectModel from '../util/projectModel';
 import Utils from '../util/utils';
 import ActionUtils from '../util/ActionUtils'
 
+import BaseComponent from '../components/baseComponent'
+
 const TRENDING_OPTIONS = ['Today', 'This week', 'This month'];
 const TimeSpanArray = ['since=daily','since=weekly','since=monthly']
 const API_URL = "https://github.com/trending/"
@@ -23,13 +25,14 @@ const TRENDING_MOREMENU_OPTIONS = [
   MORE_MENU.Custom_Language, MORE_MENU.Sort_Language, MORE_MENU.Custom_Theme, MORE_MENU.About_Author, MORE_MENU.About 
 ]
 
-class Trending extends Component {
+class Trending extends BaseComponent {
   constructor(props){
     super(props);
     this.LanguageUtil = new LanguageUtil(FLAG_LANGUAGE.flag_language);
     this.state={
       languages:[],
       timeSpan: TimeSpanArray[0],
+      theme: this.props.theme
     }
   }
   
@@ -50,31 +53,24 @@ class Trending extends Component {
   }
 
   componentDidMount(){
+    super.componentDidMount();
     this._loadData();
   }
+
+  // onThemeChange(theme){
+  //   if(!theme) return;
+  //   this.setState({
+  //     theme: theme
+  //   })
+  // }
 
   componentWillReceiveProps(){
     this._loadData();
   }
   _onSelect=(idx, value)=>{
-      this.setState({
-        timeSpan: TimeSpanArray[idx],
-      })
-    // if(idx==0){
-    //   this.setState({
-    //     timeSpan: TimeSpanArray[0],
-    //   })
-    // }
-    // if(idx==1){
-    //   this.setState({
-    //     timeSpan: TimeSpanArray[1],
-    //   })
-    // }
-    // if(idx==2){
-    //   this.setState({
-    //     timeSpan: TimeSpanArray[2],
-    //   })
-    // }
+    this.setState({
+      timeSpan: TimeSpanArray[idx],
+    })
   }
   static navigationOptions = ({ navigation }) => {
   
@@ -113,7 +109,8 @@ class Trending extends Component {
   render() {
     let content = this.state.languages.length>0?
     <ScrollableTabView
-        tabBarBackgroundColor="#6570e2"
+        // tabBarBackgroundColor="#6570e2"
+        tabBarBackgroundColor={this.state.theme.themeColor}
         tabBarActiveTextColor="#fff"
         tabBarInactiveTextColor="#fefefe"
         tabBarUnderlineStyle={{backgroundColor:"#fff"}}
@@ -254,7 +251,7 @@ class TrendingTab extends Component{
         keyExtractor = {(item, index) => item.id}
         onRefresh={this._onRefresh}
         refreshing={false}
-        renderItem={({item}) => <TrendingCell dataItem={item} 
+        renderItem={({item}) => <TrendingCell dataItem={item} key={item.id}
         onSelect={this.onSelect.bind(this,item)}
         onFavorite={(item,isFavorite)=>ActionUtils.onFavorite(this.FavoriteUtil,item,isFavorite,FLAG_STORAGE.flag_trending)}
       />

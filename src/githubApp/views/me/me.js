@@ -7,11 +7,34 @@ import MoreMenu from '../../components/moreMenu'
 import GlobalStyles from '../../assets/styles/GlobalStyles'
 import ViewCommon from '../../components/viewCommon'
 import {MORE_MENU} from '../../components/moreMenu'
-class Me extends Component {
+import CustomTheme from './customTheme'
+import BaseComponent from '../../components/baseComponent'
+class Me extends BaseComponent {
+  constructor(props){
+    super(props);
+    this.state = {
+      CustomThemeModalVisible: false,
+      theme: {}
+    }
+  }
+
   static navigationOptions = {
     title: 'Me',
   };
 
+  renderCustomThemeView(){
+    return(
+      <CustomTheme 
+        modalVisible={this.state.CustomThemeModalVisible}
+        {...this.props}
+        onClose={()=>{
+          this.setState({
+            CustomThemeModalVisible:false
+          })
+        }}
+      />
+    )
+  }
   onClick(tab){
     let TargetComponent,params={...this.props, menuType:tab};
     switch(tab){
@@ -42,7 +65,11 @@ class Me extends Component {
         break;
 
       case MORE_MENU.Custom_Theme:
+        this.setState({
+          CustomThemeModalVisible: true
+        })
         break;
+
       case MORE_MENU.About:
         TargetComponent = 'AboutApp';
         break;
@@ -67,46 +94,29 @@ class Me extends Component {
           this.props.navigation.navigate('AboutApp')}} >
             <View style={styles.itembox}>
               <View style={styles.infobox}>
-                <Ionicons name='logo-github' size={38} style={[styles.iconbox,{color: "#6570e2"}]} />
+                <Ionicons name='logo-github' size={38} style={[styles.iconbox,{color: this.state.theme.themeColor}]} />
                 <Text style={styles.itemtxt}>Github Popular</Text>
               </View>
-              <Icon name="chevron-right" size={30} style={{color: "#6570e2"}} />
+              <Icon name="chevron-right" size={30} style={{color: this.state.theme.themeColor}} />
             </View>
           </TouchableOpacity> 
 
           <Text style={styles.group_title}>Trending</Text>
-          {ViewCommon.getSettingItem(()=>{this.onClick(MORE_MENU.Custom_Language)},'playlist-add-check','Custom Language','#6570e2')}
-          {ViewCommon.getSettingItem(()=>{this.onClick( MORE_MENU.Sort_Language)},'format-line-spacing','Sort Language','#6570e2')}
+          {ViewCommon.getSettingItem(()=>{this.onClick(MORE_MENU.Custom_Language)},'playlist-add-check','Custom Language',this.state.theme.themeColor)}
+          {ViewCommon.getSettingItem(()=>{this.onClick( MORE_MENU.Sort_Language)},'format-line-spacing','Sort Language',this.state.theme.themeColor)}
 
           <Text style={styles.group_title}>Popular</Text>
-          {ViewCommon.getSettingItem(()=>{this.onClick(MORE_MENU.Custom_Key)},'playlist-add-check','Custom Tag','#6570e2')}
-          {ViewCommon.getSettingItem(()=>{this.onClick(MORE_MENU.Sort_Key)},'format-line-spacing','Sort Tag','#6570e2')}
-          {ViewCommon.getSettingItem(()=>{this.onClick(MORE_MENU.Remove_Key)},'remove-circle-outline','Remove Tag','#6570e2')}
+          {ViewCommon.getSettingItem(()=>{this.onClick(MORE_MENU.Custom_Key)},'playlist-add-check','Custom Tag',this.state.theme.themeColor)}
+          {ViewCommon.getSettingItem(()=>{this.onClick(MORE_MENU.Sort_Key)},'format-line-spacing','Sort Tag',this.state.theme.themeColor)}
+          {ViewCommon.getSettingItem(()=>{this.onClick(MORE_MENU.Remove_Key)},'remove-circle-outline','Remove Tag',this.state.theme.themeColor)}
 
           <Text style={styles.group_title}>Settings</Text>
-          {ViewCommon.getSettingItem(()=>{this.onClick(MORE_MENU.Custom_Theme)},'color-lens','Custom Theme','#6570e2')}
-          {ViewCommon.getSettingItem(()=>{this.onClick(MORE_MENU.About)},'info-outline','About','#6570e2')}
-          {ViewCommon.getSettingItem(()=>{this.onClick(MORE_MENU.About_Author)},'person-outline','About_Author','#6570e2')}
+          {ViewCommon.getSettingItem(()=>{this.onClick(MORE_MENU.Custom_Theme)},'color-lens','Custom Theme',this.state.theme.themeColor)}
+          {ViewCommon.getSettingItem(()=>{this.onClick(MORE_MENU.About)},'info-outline','About',this.state.theme.themeColor)}
+          {ViewCommon.getSettingItem(()=>{this.onClick(MORE_MENU.About_Author)},'person-outline','About_Author',this.state.theme.themeColor)}
           
         </ScrollView>
-
-        
-
-
-        {/* <Text onPress={()=>{
-          navigate('CustomTag',{isRemove:false,flag:FLAG_LANGUAGE.flag_key})}}>tap me to CustomTag</Text>
-
-        <Text onPress={()=>{
-          navigate('CustomTag',{isRemove:false,flag:FLAG_LANGUAGE.flag_language})}}>tap me to Custom Language</Text>
-
-        <Text onPress={()=>{
-          navigate('SortTag',{flag:FLAG_LANGUAGE.flag_key})}}>tap me to sortTag</Text>
-
-        <Text onPress={()=>{
-          navigate('SortTag',{flag:FLAG_LANGUAGE.flag_language})}}>tap me to sort Language</Text>
-
-        <Text onPress={()=>{
-          navigate('CustomTag',{isRemove:true})}}>tap me to RemoveTag</Text> */}
+        {this.renderCustomThemeView()}
       </View>
     );
   }

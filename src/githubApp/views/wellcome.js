@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-import { AppRegistry,StyleSheet, View, Text, Image, ViewPagerAndroid, } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-
-
+import { StyleSheet, View, Text, Image, ViewPagerAndroid } from 'react-native';
+import ThemeUtil from '../network/ThemeUtil';
 
 class Wellcome extends Component {
-
 
   constructor(){
     super();
@@ -13,7 +10,9 @@ class Wellcome extends Component {
       page: 0,
     }
   }
-
+  componentDidMount(){
+    
+  }
   _onPageSelected(e) {
     this.setState({page: e.nativeEvent.position});
   }
@@ -38,7 +37,7 @@ class Wellcome extends Component {
             source={require('../assets/images/bg2.jpg')}
           />
           <Text style={styles.txt2}
-            onPress={()=>{this.props.navigation.navigate('GithubTabs')}}
+            onPress={()=>{this.props.navigation.navigate('Popular')}}
           >
             Getting Started
           </Text>

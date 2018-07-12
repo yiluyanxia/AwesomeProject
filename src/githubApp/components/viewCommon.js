@@ -25,7 +25,7 @@ export default class ViewCommon{
               <Icon name={icon} size={25} style={[GlobalStyles.iconbox,{color: tintStyle }]} />
               <Text style={GlobalStyles.itemtxt}>{text}</Text>
             </View>
-            <Icon name={expandableIcon?expandableIcon:'keyboard-arrow-right'} size={30} style={{color: "#6570e2"}} />
+            <Icon name={expandableIcon?expandableIcon:'keyboard-arrow-right'} size={30} style={{color: tintStyle}} />
           </View>
         </TouchableOpacity> 
        

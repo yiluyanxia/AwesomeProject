@@ -11,6 +11,8 @@ import FavoriteUtil from '../util/FavoriteUtil'
 import ProjectModel from '../util/projectModel';
 import Utils from '../util/utils';
 import ActionUtils from '../util/ActionUtils'
+import BaseComponent from '../components/baseComponent'
+
 const URL = "https://api.github.com/search/repositories?q="
 const QUERY_STR ="&sort=star"
 const POPULAR_MOREMENU_OPTIONS = [
@@ -18,20 +20,28 @@ const POPULAR_MOREMENU_OPTIONS = [
 ]
 
 
-class Popular extends Component {
+class Popular extends BaseComponent {
   constructor(props){
     super(props);
     this.LanguageUtil = new LanguageUtil(FLAG_LANGUAGE.flag_key);
     this.state={
-      languages:[]
+      languages:[],
+      theme: {}
     }
   }
 
   componentWillMount() {
-    this.props.navigation.setParams({ onSelect: this._onSelect });
+    this.props.navigation.setParams({ themeColorStr: this.themeColorVal()});
+  }
+
+  themeColorVal(){
+    return this.state.theme.themeColor
+    // return 'red'
   }
 
   componentDidMount(){
+    super.componentDidMount();
+
     this._loadData();
     this.listenerPopular= DeviceEventEmitter.addListener('savaKey_search',()=>{
       this._loadData();
@@ -42,21 +52,24 @@ class Popular extends Component {
     if(this.listenerPopular){
       this.listenerPopular.remove();
     }
-    
   }
 
   componentWillReceiveProps(nextProps){
+   
     this._loadData();
+    if(nextProps !== this.state.theme){
+      Alert.alert('nextProps')
+    }
+   
   }
 
-  _onSelect=(idx, value)=>{
-    Alert.alert(idx + value)
-  }
+ 
   // this.props.navigation.navigate('Detail',{itemVal: item, flag:FLAG_STORAGE.flag_popular})
   static navigationOptions = ({ navigation }) => {
     const params = navigation.state.params || {};
     return {
-      title: 'Popular',
+      // title: params.themeColorStr?JSON.stringify(params.themeColorStr):JSON.stringify(params),
+      title:'Popular',
       headerLeft:(
         <TouchableOpacity style={{paddingLeft:20}}>
         </TouchableOpacity>
@@ -69,25 +82,11 @@ class Popular extends Component {
           <MoreMenu
             options={POPULAR_MOREMENU_OPTIONS}
             onNavigation={(item,itemParams)=>{navigation.navigate(item,itemParams)}} />
-
-            {/* onFavorite={(item,isFavorite)=>ActionUtils.onFavorite(this.FavoriteUtil,item,isFavorite)} */}
-          {/* <ModalDropdown 
-            style={styles.dropdown}
-            textStyle={styles.dropdown_text}
-            dropdownStyle={styles.dropdown_list}
-            dropdownTextStyle={styles.dropdown_option}
-            dropdownTextHighlightStyle={styles.dropdown_highligh}
-            options={TRENDING_OPTIONS}
-            onSelect={this.onSelect}
-            renderButtonText={(rowData) => params.renderButtonText(rowData)}>
-            <Ionicons style={{paddingRight:20,paddingLeft:10}} name="md-more" size={24} color="#fff" />
-          </ModalDropdown> */}
-          
-          {/* <TouchableOpacity style={{paddingRight:20,paddingLeft:10}} onPress={()=>{navigation.navigate('Search')}}>
-            <Ionicons name="md-more" size={24} color="#fff" />
-          </TouchableOpacity> */}
         </View>
       ),
+      // headerStyle:{
+      //   backgroundColor: 'black',
+      // }
     };
   };
 
@@ -107,19 +106,17 @@ class Popular extends Component {
   
   render() {
     let content = this.state.languages.length>0?
-    <ScrollableTabView
-        tabBarBackgroundColor="#6570e2"
+      <ScrollableTabView
+        tabBarBackgroundColor={this.state.theme.themeColor}
         tabBarActiveTextColor="#fff"
         tabBarInactiveTextColor="#fefefe"
-        tabBarUnderlineStyle={{backgroundColor:"#fff"}}
-      >
+        tabBarUnderlineStyle={{backgroundColor:"#fff"}}>
         {this.state.languages.map((result,i,arr)=>{
           let lan = arr[i];
           return lan.checked? <PopularTab key={i} tabLabel={lan.name} {...this.props}></PopularTab>: null
         })}
-        
       </ScrollableTabView>
-    :null;
+      :null;
     return (
       <View style={styles.container}>
         {content}
@@ -231,10 +228,10 @@ class PopularTab extends Component{
       <View>
         <FlatList
           data={this.state.dataArr}
-          keyExtractor = {(item, index) => item.id}
+          keyExtractor = {(item, index) => JSON.stringify(item.id)}
           onRefresh={this._onRefresh}
           refreshing={false}
-          renderItem={({item}) => <RepositoriesCell dataItem={item} 
+          renderItem={({item}) => <RepositoriesCell dataItem={item} key={item.id}
           onSelect={this.onSelect.bind(this,item)}
           onFavorite={(item,isFavorite)=>ActionUtils.onFavorite(this.FavoriteUtil,item,isFavorite)}
         />
