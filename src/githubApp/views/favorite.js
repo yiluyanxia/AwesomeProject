@@ -47,28 +47,10 @@ class Favorite extends BaseComponent {
     };
   };
 
-  
   render() {
-    // let content = <ScrollableTabView
-    //   tabBarBackgroundColor={this.state.theme.themeColor}
-    //   tabBarInactiveTextColor="#fff"
-    //   tabBarActiveTextColor="#fefefe"
-    //   tabBarUnderlineStyle={{backgroundColor:'#fff'}}
-    //   renderTabBar={()=><ScrollableTabBar/>} >
-
-    //   <FavoriteTab  tabLabel='Popular' flag={FlAG_STORAGE.flag_popular}/>
-    //   <FavoriteTab  tabLabel='Trending' flag={FlAG_STORAGE.flag_trending}/>
-
-    // </ScrollableTabView>;
-    
-  
     return (
       <View style={styles.container}>
-        {/* <Text>{JSON.stringify(this.state.theme)}</Text> */}
-        {/* <Text>{JSON.stringify(this.state.theme.themeColor)}</Text> */}
-        {/* {content} */}
         <ScrollableTabView
-          // tabBarBackgroundColor="#6570e2"
           tabBarBackgroundColor={this.state.theme.themeColor}
           tabBarActiveTextColor="#fff"
           tabBarInactiveTextColor="#fefefe"

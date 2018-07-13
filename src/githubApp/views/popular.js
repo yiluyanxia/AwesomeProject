@@ -55,20 +55,13 @@ class Popular extends BaseComponent {
   }
 
   componentWillReceiveProps(nextProps){
-   
     this._loadData();
-    if(nextProps !== this.state.theme){
-      Alert.alert('nextProps')
-    }
-   
   }
 
- 
-  // this.props.navigation.navigate('Detail',{itemVal: item, flag:FLAG_STORAGE.flag_popular})
+
   static navigationOptions = ({ navigation }) => {
     const params = navigation.state.params || {};
     return {
-      // title: params.themeColorStr?JSON.stringify(params.themeColorStr):JSON.stringify(params),
       title:'Popular',
       headerLeft:(
         <TouchableOpacity style={{paddingLeft:20}}>
@@ -84,9 +77,7 @@ class Popular extends BaseComponent {
             onNavigation={(item,itemParams)=>{navigation.navigate(item,itemParams)}} />
         </View>
       ),
-      // headerStyle:{
-      //   backgroundColor: 'black',
-      // }
+     
     };
   };
 
