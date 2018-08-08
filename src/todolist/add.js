@@ -4,12 +4,13 @@ import {
  View,
  Text,
  TextInput,
- Button,
  Alert,
  TouchableOpacity,
  AsyncStorage,
+ DeviceEventEmitter
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Utils from './utils/utils'
 
 class Add extends Component {
   constructor(props) {
@@ -19,70 +20,56 @@ class Add extends Component {
         {
           id: "",
           content: "",
-          isComplete:false
+          isComplete: false
         },
         todoArr:[]
-       
     };
   }
-
 
   static navigationOptions = ({ navigation }) => {
     const params = navigation.state.params || {};
     return {
       headerRight: (
         <TouchableOpacity style={{width: 56, height: 36, paddingRight:20}} onPress={params.saveTodo}>
-          <Ionicons name="md-checkmark" size={36} color="#448AFF" />
+          <Ionicons name="md-checkmark" size={36} color="#fff" />
         </TouchableOpacity>
       ),
     };
   };
 
   componentWillMount() {
-    this.props.navigation.setParams({ saveTodo: this._saveTodo });
+    this.props.navigation.setParams({ saveTodo: this._saveTodo })
     AsyncStorage.getItem('todolistData', (err, result) => {
       if(err){
         return;
       }
-      let todoListArr = (result != null) ? JSON.parse(result) :[];
-      this.setState({todoArr:todoListArr})
-      Alert.alert("getItem")
-      
+      let todoArr = (result != null) ? JSON.parse(result) :[]
+      this.setState({
+        todoArr: todoArr
+      })
     })
-
-
   }
  
   _saveTodo = () => {
-    let _this = this
-    const todoVal = _this.state.todo
-    _this.setState({todoArr: _this.state.todoArr.push(todoVal)})
-    
-    AsyncStorage.setItem('todolistData', JSON.stringify(_this.state.todoArr), ()=>{
-      Alert.alert("_saveTodo setItem");
+    const todoVal = this.state.todo
+    this.setState({todoArr: this.state.todoArr.push(todoVal)})
+    AsyncStorage.setItem('todolistData', JSON.stringify(this.state.todoArr), ()=>{
+      // Alert.alert("_saveTodo setItem");
       });
+    DeviceEventEmitter.emit('todolist_add')
+    this.props.navigation.goBack();
   }
 
   _changeTodo(text){
-    let _this = this;
-    const _id = _this._genID(6)
-    _this.setState({
+    let _id = Utils.uniqueId()
+    this.setState({
       todo:{
         id:_id,
         content:text,
         isComplete:false
       } 
     })
-    // Alert.alert("_changeTodo");
-
-    
-
   }
-
-  _genID(length){
-    return Number(Math.random().toString().substr(3,length) + Date.now()).toString(36);
-  }
-
 
   render(){
     return (
@@ -98,8 +85,7 @@ class Add extends Component {
           placeholder="add a todo"
           autoFocus={true}
         />
-        <Text>{JSON.stringify(this.state.todo)}</Text>
-        <Text>{JSON.stringify(this.state.todoArr)}</Text>
+        {/* <Text>{JSON.stringify(this.state.todo)}</Text> */}
       </View>
     )
   }
@@ -117,9 +103,5 @@ const styles = StyleSheet.create({
     color: "#333",
     padding: 0,
     fontSize: 18
-  },
-  saveBtn: {
-    width: 36,
-    height: 36,
   }
 })

@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
 import {
- StyleSheet,
- View,
- Text,
- Switch,
- Alert,
- TouchableHighlight,
- AsyncStorage
+  Alert,
+  StyleSheet,
+  View,
+  Text,
+  TouchableHighlight,
+  TouchableOpacity
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -14,40 +13,44 @@ class TodoItem extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      switchValue: this.props.isComplete,
+      switchValue: this.props.dataItem.isComplete,
     }
   }
-
-  _mergeSwitch(){
-    this.setState(previousState => {
-      return { switchValue: !previousState.switchValue };
-    });
-    this.props._merge()
+  componentWillReceiveProps(nextProps){
+    this.setCompleteState(nextProps.dataItem.isComplete)
   }
-
-  
-  // onPress={this.addClick.bind(this)}
-  // <Switch
-  // onValueChange={(value) => {
-  //   this.setState({switchValue: value})
-  //   this._mergeSwitch.bind(this)
-  //   }
-  // }
-  
+  setCompleteState(isComplete){
+    this.setState({
+      switchValue: isComplete
+    })
+  }
+  _onSwitch(){
+    this.setCompleteState(!this.state.switchValue)
+    this.props.checkTodo(this.props.dataItem)
+  }
+ 
+  _showModel(todo){
+    Alert.alert(
+      'Delete it ?',
+      todo.content,
+      [
+        {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        {text: 'OK', onPress: () => this.props.deleteTodo(todo)},
+      ],
+      { cancelable: false }
+    )
+  }
   render (){
     return (
       <View style={styles.todoitem}>
         <TouchableHighlight  underlayColor="#90CAF9" onPress={
-          this._mergeSwitch.bind(this)
+          this._onSwitch.bind(this)
          }>
-          <Ionicons name={this.state.switchValue? "md-checkbox-outline":"md-checkbox"} size={34} style={this.state.switchValue? styles.colorOn:styles.colorOff} />
-          
+          <Ionicons name={this.state.switchValue? "md-checkbox":"md-square-outline"} size={34} style={this.state.switchValue? styles.colorOff:styles.colorOn} />
         </TouchableHighlight>
-      
-        <Text style={this.state.switchValue? styles.itemtxt:styles.itemtxtOff} onPress={this.handleSettingsPress}>{this.props.content}</Text>
-
-        
-        
+        <TouchableOpacity onLongPress={()=>{ this._showModel(this.props.dataItem)}} >
+          <Text style={this.state.switchValue? styles.itemtxtOff:styles.itemtxt} onPress={this.handleSettingsPress}>{this.props.dataItem.content}</Text>
+        </TouchableOpacity>
       </View>
     )
   }
@@ -63,7 +66,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   colorOn:{
-    color:"#2196F3"
+    color:"#F50057"
   },
   colorOff:{
     color:"#e0e0e0"

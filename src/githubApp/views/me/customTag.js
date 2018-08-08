@@ -17,7 +17,6 @@ class CustomTag extends Component {
     }
   }
   
-
   _loadData(){
     this.LanguageUtil.fetch().then(result => {
       this.setState({
@@ -78,7 +77,6 @@ class CustomTag extends Component {
       }
     };
   };
-
   
   componentWillMount() {
     this.props.navigation.setParams({ onSave: this._onSave });

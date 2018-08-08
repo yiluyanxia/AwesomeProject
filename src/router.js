@@ -6,40 +6,17 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import HomeScreen from './home'
-import AllList from './todolist'
+import AllList from './todolist/all'
 import AddTodo from './todolist/add'
 import Completed from './todolist/completed'
 import Incomplete from './todolist/incomplete'
 
 import GithubApp from './githubApp'
 
-
-
-export const TodolistStack = createStackNavigator({
-  All: {
-    screen: AllList,
-    navigationOptions:{
-      title:'All'
-    }
-  },
-  Add: {
-    screen: AddTodo,
-    navigationOptions:{
-      title:'Add',
-      // headerRight: (
-      //   <Ionicons name="md-checkmark" size={25} color="#448AFF" />
-      // ),
-    }
-
-  }
-})
-
 export const TodolistTabs = createBottomTabNavigator({
-  All: {
-    screen: TodolistStack,
-  },
+  All: {screen: AllList },
+  Incomplete: {screen: Incomplete},
   Completed: {screen: Completed},
-  Incomplete: {screen: Incomplete}
 },
 {
   navigationOptions:({ navigation }) => ({
@@ -58,7 +35,7 @@ export const TodolistTabs = createBottomTabNavigator({
     }
   }),
   tabBarOptions: {
-    activeTintColor: '#448AFF',
+    activeTintColor: '#FF4081',
     inactiveTintColor: '#455A64',
     labelStyle:{
       fontSize: 13,
@@ -67,14 +44,47 @@ export const TodolistTabs = createBottomTabNavigator({
       backgroundColor: '#fff',
     }
   },
-}
-)
+})
 
+export const TodolistStack = createStackNavigator({
+  TodoTab: {
+    screen: TodolistTabs,
+    navigationOptions:{
+      title:'Todo list'
+    }
+  },
+  Add: {
+    screen: AddTodo,
+    navigationOptions:{
+      title:'Add',
+    }
+  }
+},
+{
+  navigationOptions: ({
+    navigation
+  }) => {
+    return{
+      headerStyle:{
+        backgroundColor: '#FF4081',
+        borderBottomColor: 'transparent',
+        borderWidth: 0,
+        elevation: 0,
+        shadowOpacity: 0,
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        flex: 1,
+        textAlign: 'center'
+      }
+    }
+  }
+})
 
 export const RootStack = createStackNavigator({
   Home: HomeScreen,
   Todolist: {
-    screen: TodolistTabs,
+    screen: TodolistStack,
   },
   GithubApp: GithubApp
 },

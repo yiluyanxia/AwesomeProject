@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import { RootStack,TodolistTabs } from './router';
+import { RootStack } from './router';
 
 export default class App extends Component {
   render(){

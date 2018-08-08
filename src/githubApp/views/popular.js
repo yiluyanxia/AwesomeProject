@@ -244,6 +244,5 @@ const styles = StyleSheet.create({
   headerRight_cont:{
     flexDirection: 'row',
     alignItems: 'center',
-    
   }
 })

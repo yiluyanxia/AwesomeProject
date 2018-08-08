@@ -190,7 +190,7 @@ export const GithubStack = createStackNavigator({
     screen: Search
   }
 },{
-  navigationOptions:({navigation,screenProps})=>({
+  navigationOptions:({navigation, screenProps})=>({
     headerStyle: {
       backgroundColor: screenProps.themeColor,
       borderBottomColor: 'transparent',
