@@ -5,7 +5,8 @@ import DataRepository from '../../network/DataRepository'
 import ThemeFactory, {ThemeFlags} from '../../assets/styles/ThemeFactory'
 import GlobalStyles from '../../assets/styles/GlobalStyles'
 import ThemeUtil from '../../network/ThemeUtil'
-import { NavigationActions } from 'react-navigation'
+// import { NavigationActions } from 'react-navigation'
+import { StackActions, NavigationActions } from 'react-navigation'
 class CustomTheme extends Component {
   constructor(props){
     super(props);
@@ -17,8 +18,20 @@ class CustomTheme extends Component {
     this.ThemeUtil.save(ThemeFlags[key])
     
     DeviceEventEmitter.emit('theme_change', ThemeFactory.createTheme(ThemeFlags[key]) ) 
-
+    // this.resetApp()
+    this.props.navigation.navigate('Splash')
   }
+  resetApp(){
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [
+        // NavigationActions.navigate({ routeName: 'Profile' }),
+        NavigationActions.navigate({ routeName: 'Popular' }),
+      ],
+    });
+    this.props.navigation.dispatch(resetAction);
+  }
+  
   renderThemeItems(){
     var views = [];
     for(let i = 0,keys=Object.keys(ThemeFlags),l=keys.length;i<l;i++){

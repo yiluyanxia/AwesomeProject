@@ -150,14 +150,14 @@ isMounted(...) is deprecated in plain JavaScript React classes. Instead, make su
 官网的例子和网友的示例都练习了一遍。
 
 
-### （三）todo list
+### （三）Todo List
 尝试编写第一个实际的案例。
-一堆bug~  
-没心情~  
+这里是发在[思否上的小博文](https://segmentfault.com/a/1190000015933522?_ea=4166861#articleHeader4)，详细记录了，整个开发过程，还有心得体会，不，没有心得体会。
+
 
 ### （四）GitHubApp
 
-跟着[贾鹏辉老师GitHubPopular]](https://github.com/crazycodeboy/GitHubPopular)手把手教学写GitHubApp
+跟着[贾鹏辉老师GitHubPopular](https://github.com/crazycodeboy/GitHubPopular)手把手教学写GitHubApp
 
 初步成型，最终还是启用了BIOS的VT,Android Studio自带的模拟器终于跑起来了，哈哈。
 ![githubApp_01](./docs/githubApp_01.png)   
@@ -170,12 +170,22 @@ isMounted(...) is deprecated in plain JavaScript React classes. Instead, make su
 目前还有很多的bug,以及很多需要优化的地方。
 其中一个最明显的Bug如下：
 
-![githubApp_01](./docs/react-navigation-theme.gif) 
+![githubApp gif](./docs/react-navigation-theme.gif) 
   
 结合react navigation制作的换肤功能，再切换主题后，底部的BottomTabNavigator可以动态修改颜色，但是顶部的StackNavigator不能动态修改颜色，为什么？
 如果页面没有被打开过，顶部的StackNavigator也是可以动态修改颜色的。
 
+### (五) Redux的第一次
+第一次接触Redux，完全一脸懵逼，看完[官方文档](https://redux.js.org/)仍是云里雾里,还有实时同步的[中文文档](http://cn.redux.js.org/)其作者制作了视频教程，真是贴心~（虽然我并没有看 *手动捂脸*）
+<!-- https://stackoverflow.com/questions/39664635/react-native-call-redux-getstate-inside-component -->
+结合网友们在React Native中使用Redux的教程，将官网的Counter示例，做了简单的修改，搬到了React Native中，在多次的摸爬打滚之后还是摸索到了一丢丢套路。
 
+![Counter gif](./docs/counter_prv.gif) 
+
+有一个地方需要注意的是在组件中直接使用store.getState()是无法得到state的，为什么？原因在[这里](https://stackoverflow.com/questions/39664635/react-native-call-redux-getstate-inside-component),stackoverflow大佬们的解答，相当专业，虽然我也没太看懂。
+
+### （六）使用了Redux的Todo List
+<!-- #AA00FF -->
 
 其中遇到各种各样的bug，有心情在整理记录。 
 这是小白的开发日记 *（手动笑哭）* 。

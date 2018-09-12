@@ -130,3 +130,61 @@ __guardSafe
     C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\BatchedBridge\MessageQueue.js:314:6
 callFunctionReturnFlushedQueue
     C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\BatchedBridge\MessageQueue.js:115:17
+
+undefined is not a function (evaluating '_reactNavigation.NavigationActions.reset')
+resetApp
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\src\githubApp\views\me\customTheme.js:24:48
+proxiedMethod
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-proxy\modules\createPrototypeProxy.js:44:35
+onSelectTheme
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\src\githubApp\views\me\customTheme.js:21:4
+proxiedMethod
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-proxy\modules\createPrototypeProxy.js:44:35
+onPress
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\src\githubApp\views\me\customTheme.js:40:127
+touchableHandlePress
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Components\Touchable\TouchableOpacity.js:201:45
+_performSideEffectsForTransition
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Components\Touchable\Touchable.js:744:34
+_receiveSignal
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Components\Touchable\Touchable.js:662:44
+touchableHandleResponderRelease
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Components\Touchable\Touchable.js:431:24
+invokeGuardedCallback
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Renderer\ReactNativeRenderer-dev.js:39:15
+invokeGuardedCallback
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Renderer\ReactNativeRenderer-dev.js:221:34
+invokeGuardedCallbackAndCatchFirstError
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Renderer\ReactNativeRenderer-dev.js:245:48
+executeDispatch
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Renderer\ReactNativeRenderer-dev.js:572:4
+executeDispatchesInOrder
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Renderer\ReactNativeRenderer-dev.js:603:20
+executeDispatchesAndRelease
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Renderer\ReactNativeRenderer-dev.js:761:29
+executeDispatchesAndReleaseTopLevel
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Renderer\ReactNativeRenderer-dev.js:772:37
+forEachAccumulated
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Renderer\ReactNativeRenderer-dev.js:740:16
+runEventsInBatch
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Renderer\ReactNativeRenderer-dev.js:927:6
+runExtractedEventsInBatch
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Renderer\ReactNativeRenderer-dev.js:952:19
+<unknown>
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Renderer\ReactNativeRenderer-dev.js:2703:6
+batchedUpdates
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Renderer\ReactNativeRenderer-dev.js:13724:16
+batchedUpdates
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Renderer\ReactNativeRenderer-dev.js:2565:27
+_receiveRootNodeIDEvent
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Renderer\ReactNativeRenderer-dev.js:2701:17
+receiveTouches
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\Renderer\ReactNativeRenderer-dev.js:2777:28
+__callFunction
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\BatchedBridge\MessageQueue.js:351:47
+<unknown>
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\BatchedBridge\MessageQueue.js:116:26
+__guardSafe
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\BatchedBridge\MessageQueue.js:314:6
+callFunctionReturnFlushedQueue
+    C:\yiluyanxia\repositories\repository-react-native\AwesomeProject\node_modules\react-native\Libraries\BatchedBridge\MessageQueue.js:115:17

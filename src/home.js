@@ -1,17 +1,9 @@
 import React, { Component } from 'react';
 import { AppRegistry, SectionList, StyleSheet, Text, View, FlatList,TouchableOpacity } from 'react-native';
-// import Icon from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-// import Stopwatch from './stopwatch'
-// import Todolist from './todolist'
-// import { createStackNavigator  } from 'react-navigation';
-
 
 class HomeView extends Component {
-  static navigationOptions = {
-    title: 'RN practice',
-  };
-
+  
   constructor(){
     super();
     this.state = {
@@ -34,32 +26,32 @@ class HomeView extends Component {
         },
         {
           key: 3,
-          title: "beach access",
-          component: "Todolist",
-          icon: "beach-access",
+          title: "Todos & Redux",
+          component: "TodosRedux",
+          icon: "format-line-spacing",
           size: 48,
           color: "#EA80FC"
         },
         {
           key: 4,
-          title: "cake",
-          component: "Todolist",
+          title: "Counter",
+          component: "Counter",
           icon: "cake",
           size: 48,
           color: "#B388FF"
         },
         {
           key: 5,
-          title: "camera",
-          component: "Todolist",
-          icon: "camera",
+          title: "Counter",
+          component: "Counter",
+          icon: "exposure",
           size: 48,
           color: "#8C9EFF"
         },
         {
           key: 6,
-          title: "directions bike",
-          component: "Todolist",
+          title: "Bike",
+          component: "Counter",
           icon: "directions-bike",
           size: 48,
           color: "#82B1FF"
