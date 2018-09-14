@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
 import {
-  Alert,
   StyleSheet,
   View,
   Text,
-  TouchableHighlight,
   TouchableOpacity
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -14,14 +12,14 @@ class TodoItem extends Component{
     this.props.checkTodo
   }
   render (){
-    const {checkTodo, completed, text } = this.props
+    const {checkTodo, completed, content } = this.props
     return (
       <View style={styles.todoitem}>
         <TouchableOpacity underlayColor="#90CAF9" onPress={checkTodo}>
           <Ionicons name={completed? "md-checkbox":"md-square-outline"} size={34} style={completed? styles.colorOff:styles.colorOn} />
         </TouchableOpacity>
         <TouchableOpacity>
-          <Text style={completed? styles.itemtxtOff:styles.itemtxt}>{text}</Text>
+          <Text style={completed? styles.itemtxtOff:styles.itemtxt}>{content}</Text>
         </TouchableOpacity>
       </View>
     )

@@ -1,17 +1,9 @@
-// import Utils from '../utils/utils'
-let nexrTodoId = 0;
+import Utils from '../utils/utils'
 export const addTodo = (text) => {
   return {
     type: 'ADD_TODO',
-    id: nexrTodoId++,
-    text: text
-  }
-}
-
-export const setVisibility =(filter)=>{
-  return{
-    type: 'SET_VISIBILITY',
-    filter
+    id: Utils.uniqueId(),
+    content: text
   }
 }
 
