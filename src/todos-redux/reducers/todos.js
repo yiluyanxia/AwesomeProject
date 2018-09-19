@@ -1,4 +1,5 @@
-let initState = [];
+
+var initState = [];
 const todos = (state = initState, action)=>{
   switch(action.type){
     case 'ADD_TODO':

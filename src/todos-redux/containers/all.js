@@ -3,6 +3,8 @@ import {
  StyleSheet,
  View,
  TouchableOpacity,
+ Text,
+ AsyncStorage
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {connect} from 'react-redux'
@@ -12,7 +14,6 @@ class AllScreen extends Component {
   _navigationAdd = () => {
     this.props.navigation.navigate('Add');
   };
-  
   render() {
     const { todos, onTodoClick } = this.props
     return (

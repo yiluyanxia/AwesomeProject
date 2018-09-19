@@ -2,8 +2,7 @@ import React, {Component} from 'react';
 import {
  StyleSheet,
  View,
- FlatList,
- TouchableOpacity,
+ FlatList
 } from 'react-native';
 import TodoItem from '../components/todoItem'
 import Ionicons from 'react-native-vector-icons/Ionicons';

@@ -185,6 +185,7 @@ isMounted(...) is deprecated in plain JavaScript React classes. Instead, make su
 有一个地方需要注意的是在组件中直接使用store.getState()是无法得到state的，为什么？原因在[这里](https://stackoverflow.com/questions/39664635/react-native-call-redux-getstate-inside-component),stackoverflow大佬们的解答，相当专业，虽然我也没太看懂。
 
 ### （六）使用了Redux的Todo List
+折腾了好久终于搞出来了。
 <!-- #AA00FF -->
 
 其中遇到各种各样的bug，有心情在整理记录。 
